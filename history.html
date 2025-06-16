@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>সাকিব এন্টারপ্রাইজ</title>
+  <style>
+    
+    /* Body Style */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+    width: 420px;
+}
+
+/* Navbar Style */
+.navbar {
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    padding: 10px;
+    background-color: #9F2B68;
+    color: white;
+    height: 30px;
+    gap: 3px;
+    width: px;
+    overflow: auto;
+}
+.navbar::-webkit-scrollbar {
+        display: none;  /* স্ক্রল বার হাইড হয়ে যাবে */
+    }
+
+/* Navbar Input Style */
+.navbar input {
+    border-radius: 5px;
+    font-size: 16px;
+    height: 25px;
+    width: 150px;
+} 
+
+.navbar label {
+  white-space: nowrap;
+  margin-top: 7px;
+  margin-left: -70px;
+  color: black;
+  font-size: 14px;
+  font-weight: bold;
+  margin-right: 5px;
+}
+#orderDate {
+  padding-left: 10px;
+}
+    
+/* 🔹 টেবিল কন্টেইনার */
+#tabliContainer {
+    max-width: 100%;
+    overflow-x: auto;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+}
+
+/* 🔹 টেবিলের সর্বোচ্চ উচ্চতা নির্ধারণ (৫০০px পর্যন্ত স্ক্রল হবে) */
+.table-wrapper {
+    max-height: 500px;
+    overflow-y: auto;
+    display: block;
+}
+
+/* 🔹 টেবিল ডিজাইন */
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    table-layout: fixed;
+    
+}
+
+/* 🔹 টেবিলের হেডার (স্টিকি করবে) */
+.product-table thead {
+    position: sticky;
+    top: 0;
+    background: #007bff;
+    color: white;
+    z-index: 2;
+}
+.product-table th {
+  border: 1px solid white;
+  height: 30px;
+}
+.product-table td {
+  border: 1px solid black;
+  height: 30px;
+}
+
+/* 🔹 টেবিল হেডার (th) সাইজ নির্ধারণ */
+.product-table th:nth-child(1),
+.product-table td:nth-child(1) {
+    width: 50px;
+    min-width: 50px;
+    max-width: 50px;
+    font-size: 18px;
+}
+
+.product-table th:nth-child(2),
+.product-table td:nth-child(2) {
+    width: 250px;
+    min-width: 250px;
+    max-width: 250px;
+    font-size: 18px;
+}
+
+.product-table th:nth-child(6),
+.product-table td:nth-child(6) {
+    width: 60px;
+    min-width: 60px;
+    max-width: 60px;
+    font-size: 18px;
+}
+.product-table th:nth-child(9),
+.product-table td:nth-child(9),
+.product-table th:nth-child(10),
+.product-table td:nth-child(10) {
+    width: 60px;
+    min-width: 60px;
+    max-width: 60px;
+    font-size: 16px;
+}
+
+.product-table th:last-child,
+.product-table td:last-child {
+    width: 100px;
+    min-width: 100px;
+    max-width: 100px;
+    font-size: 18px;
+}
+
+/* 🔹 অন্যান্য সব th ও td এর প্রস্থ নির্ধারণ */
+.product-table th:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(6)):not(:last-child):not(:nth-child(9)):not(:nth-child(10)),
+.product-table td:not(:nth-child(1)):not(:nth-child(2)):not(:nth-child(6)):not(:last-child):not(:nth-child(9)):not(:nth-child(10)) {
+    width: 100px;
+    min-width: 100px;
+    max-width: 100px;
+    font-size: 18px;
+}
+
+/* 🔹 মোট হিসাবের জন্য যুক্ত হওয়া রো (প্রতি td এর প্রস্থ ১৫০px) */
+.product-table tfoot td {
+    width: 200px !important;
+    min-width: 200px !important;
+    max-width: 200px !important;
+    font-weight: bold;
+    background: #f8f9fa;
+    font-size: 18px;
+}
+
+/* 🔹 ইনপুট ডিজাইন (সমস্ত স্টাইল বাতিল করা) */
+.product-table input {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: none;
+    text-align: center;
+    padding: 0;
+    outline: none;
+    font-size: 18px;
+}
+#tabliContainer h3 {
+  margin: 0px;
+  text-align: center;
+  padding: 5px;
+  font-size: 20px;
+}
+.placeholder-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: 5px;
+    box-sizing: border-box;
+}
+
+.placeholder-container label {
+    position: absolute;
+    left: 10px;
+    white-space: nowrap;
+    color: gray;
+    transition: 0.3s ease-in-out;
+}
+
+.placeholder-container input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    padding-left: 60px; /* প্লেসহোল্ডারের পর ইনপুট লেখা শুরু হবে */
+    font-size: 16px;
+}
+
+.placeholder-container input:focus + label,
+.placeholder-container input:not(:placeholder-shown) + label {
+    left: 5px; /* লেবেল একটু বামে সরে যাবে */
+    color: black;
+}
+.eql {
+  width: 100%;
+  height: 100%;
+  
+}
+
+
+/* Footer Style */
+.footer-container {
+    background-color: #E2DFD2;
+    height: 60px;
+    width: 420px;
+    display: flex;
+}
+
+/* Footer Textarea */
+#notes {
+    padding: 10px;
+    width: 200px;
+    margin-left: 10px;
+    margin-top: 4px;
+}
+
+/* Footer Buttons */
+.footer-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-left: 10px;
+}
+
+.footer-buttons button {
+    margin: 5px;
+    padding: 10px 10px 10px 10px;
+    border-radius: 50%;
+    background-color: #0818A8;
+    color: white;
+    font-size: 16px;
+    border: 2px solid #0818A8;
+}
+
+
+  </style>
+</head>
+<body>
+  
+      <!-- নেভবার -->
+    <div class="navbar">
+        <input type="text" id="roadName" placeholder="রোড">
+       <input type="text" id="dsr-name" placeholder="ডিএসার" readonly>
+       <input type="date" id="orderDate">
+        <input type="number" id="totalSell"  readonly="">
+        <label for="totalSell">টাকা বিক্রি </label>
+        <input type="number" id="joma">
+        <label for="joma">টাকা জমা</label>
+        <input type="number" id="dueAmount" readonly>
+        <label for="dueAmount">টাকা বাকি</label>
+    </div>
+
+           
+        <!-- টেবিল -->
+    <div class="table-container" id="tabliContainer">
+      <table id="mainTable" class="product-table">
+    <thead>
+        <tr>
+            <th>নং</th>
+            <th>প্রডাক্টের নাম</th>
+            <th>অর্ডার</th>
+            <th>ফেরত</th>
+            <th>বিক্রি</th>
+            <th>মূল্য</th>
+            <th>মোট সেল</th>
+            <th>স্টক</th>
+            <th>ডেমেজ</th>
+            <th>ডেমমূল্য</th>
+        </tr>
+      </thead>
+    </table>
+    
+          <!-- ফুটার -->
+    <footer class="footer-container">
+        <div class="footer-textarea">
+            <textarea id="notes" placeholder="মন্তব্য লিখুন..." maxlength="250"></textarea>
+        </div>
+
+        <div class="footer-buttons">
+          
+            <button id="draftButton" class="draft-btn" onclick="loadDrafts()">চেক</button>
+             
+        </div>
+    </footer>
+       
+    </div>
+     
+<!-- পপআপ ডিভ -->
+<div id="draftPopup" style="display: none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: white; padding: 20px; border: 1px solid #ccc; box-shadow: 0 4px 8px rgba(0,0,0,0.1); max-height: 400px; overflow-y: auto;">
+    <h3>ড্রাফ্ট হিসাবের তালিকা</h3>
+    <ul id="draftList"> </ul>
+    <button onclick="closeDraftPopup()">বন্ধ করুন</button>
+</div>
+    
+<script type="module">
+// ✅ Firebase.js থেকে প্রয়োজনীয় ফাংশন ইমপোর্ট করুন
+import { db, auth } from "./firebase.js";
+import { 
+    collection, 
+    getDocs, 
+    doc, 
+    getDoc 
+} from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+
+// --------------------------------------------------------------------
+// ✅ **ড্রাফ্ট পপআপ খুলুন (Offline Mode সহ)**
+window.loadDrafts = async function () {
+    const draftPopup = document.getElementById("draftPopup");
+    const draftList = document.getElementById("draftList");
+    draftList.innerHTML = ""; // আগের ডাটা মুছে ফেলবে
+
+    try {
+        // 🔹 Firestore ক্যাশ থেকে ডাটা ফেচ করবে যদি নেটওয়ার্ক অফ থাকে
+        const querySnapshot = await getDocs(collection(db, "History"), navigator.onLine ? {} : { source: "cache" });
+
+        let hasDrafts = false;
+        const uniqueDrafts = new Set(); // 🔹 ডুপ্লিকেট চেক করার জন্য
+
+        querySnapshot.forEach((docSnap) => {
+            const data = docSnap.data();
+            if (data.status === "Complete") { // 🔹 শুধুমাত্র Incomplete হিসাব দেখাবে
+                const textContent = `${data.dsrName} - ${data.orderDate}`;
+                if (!uniqueDrafts.has(textContent)) {
+                    uniqueDrafts.add(textContent);
+                    hasDrafts = true;
+                    const li = document.createElement("li");
+                    li.textContent = textContent;
+                    li.dataset.docId = docSnap.id;
+                    li.onclick = function () {
+                        loadDraftData(docSnap.id);
+                        draftPopup.style.display = "none";
+                    };
+                    draftList.appendChild(li);
+                }
+            }
+        });
+
+        if (!hasDrafts) {
+            alert("কোনো Complete হিসাব পাওয়া যায়নি!");
+            return;
+        }
+        draftPopup.style.display = "block";
+    } catch (error) {
+        console.error("ড্রাফ্ট ডাটা লোড করতে সমস্যা:", error);
+        alert("ড্রাফ্ট ডাটা লোড করতে সমস্যা: " + error.message);
+    }
+};
+
+// --------------------------------------------------------------------
+// ✅ **ড্রাফ্ট ডাটা লোড করুন (Offline Mode সহ)**
+async function loadDraftData(docId) {
+    try {
+        const historyRef = doc(db, "History", docId);
+        const historySnap = await getDoc(historyRef, navigator.onLine ? {} : { source: "cache" });
+
+        if (!historySnap.exists()) {
+            alert("ডকুমেন্ট খুঁজে পাওয়া যায়নি!");
+            return;
+        }
+
+        const data = historySnap.data();
+        const table = document.getElementById("mainTable");
+
+        // ✅ **নেভবারের ইনপুট ফিল্ডে ডাটা সেট করা হচ্ছে**
+        document.getElementById("roadName").value = data.roadName || "";
+        document.getElementById("dsr-name").value = data.dsrName || "";
+        Object.assign(document.getElementById("orderDate"), { type: "text", value: data.orderDate || "" });
+        document.getElementById("totalSell").value = data.totalSell || 0;
+        document.getElementById("joma").value = data.joma || 0;
+        document.getElementById("dueAmount").value = data.dueAmount || 0;
+        document.getElementById("notes").value = data.notes || "";
+
+        // ✅ **Firestore থেকে কোম্পানির নাম বের করা**
+        const companyNames = Object.keys(data).filter(key => 
+            !["roadName", "dsrName", "orderDate", "totalSell", "joma", "dueAmount", "status", "notes"].includes(key)
+        );
+
+        console.log("লোড হওয়া কোম্পানির নাম:", companyNames);
+
+        for (const companyName of companyNames) {
+            const products = data[companyName];
+            let tbody = document.getElementById(companyName);
+            if (tbody) {
+                alert(`${companyName} এর জন্য টেবিল ইতোমধ্যে রয়েছে!`);
+                continue;
+            }
+
+            // ✅ **নতুন `tbody` তৈরি করা হবে**
+            tbody = document.createElement("tbody");
+            tbody.id = companyName;
+            const companyNameFm = companyName.replace(/_/g, " "); // "_" -> " " পরিবর্তন
+
+            // ✅ **প্রথম রো কোম্পানির নাম দেখাবে**
+            const companyRow = document.createElement("tr");
+            companyRow.innerHTML = `<td colspan="10"><strong>${companyNameFm}</strong></td>`;
+            tbody.appendChild(companyRow);
+
+            let lastRowData = null;
+            products.forEach((productData) => {
+                if (productData.rowName === "lastRow") {
+                    lastRowData = productData;
+                    return;
+                }
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${productData.productNumber || ""}</td>
+                    <td>${productData.productName || ""}</td>
+                    <td><input type="text" placeholder="অর্ডার" value="${productData.order || ""}"></td>
+                    <td><input type="text" placeholder="ফেরত" value="${productData.returned || ""}"></td>
+                    <td>${productData.sell || ""}</td>
+                    <td>${productData.price || ""}</td>
+                    <td>${productData.totalSell || ""}</td>
+                    <td>${productData.stock || ""}</td>
+                    <td><input type="text" placeholder="ডেমেজ" value="${productData.damage || ""}"></td>
+                    <td>${productData.damageCost || ""}</td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            if (lastRowData) {
+                const totalRow = document.createElement("tr");
+                totalRow.innerHTML = `
+                    <td colspan="2">
+                        <div class="placeholder-container">
+                            <label>মোট বিক্রি</label>
+                            <input type="text" id="totalSellInput" placeholder=" " value="${lastRowData.totalSell || ""}">
+                        </div>
+                    </td>
+                    <td colspan="2">
+                        <div class="placeholder-container">
+                            <label>মোট ডেমেজ</label>
+                            <input type="text" id="totalDamageInput" placeholder=" " value="${lastRowData.totalDamage || ""}">
+                        </div>
+                    </td>
+                    <td colspan="2" id="motTaka">
+                        <div class="placeholder-container">
+                            <label>মোট টাকা</label>
+                            <input type="text" id="totalAmountInput" placeholder=" " value="${lastRowData.totalAmount || ""}">
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(totalRow);
+            }
+            table.appendChild(tbody);
+        }
+        alert("✅ ডাটা সফলভাবে লোড হয়েছে!");
+    } catch (error) {
+        console.error("ডাটা লোড করতে সমস্যা:", error);
+        alert("ডাটা লোড করতে সমস্যা: " + error.message);
+    }
+}
+
+// --------------------------------------------------------------------
+// ✅ **পপআপ বন্ধ করার ফাংশন**
+window.closeDraftPopup = function () {
+    document.getElementById("draftPopup").style.display = "none";
+};
+
+// --------------------------------------------------------------------
+// ✅ **Auth State চেক (Offline Support সহ)**
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+       console.log("User is logged in:", user.uid);
+    } else {
+        console.error("User not logged in. Redirecting to login page.");
+        window.location.href = "login.html";
+    }
+});
+
+</script>
+
+
+
+ </body>

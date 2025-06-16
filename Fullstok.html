@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>স্টক পেজ</title>
+    <style>
+      /* ন্যাভবার স্টাইল */
+.navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #007bff;
+    padding: 10px 20px;
+    color: white;
+}
+
+/* সিলেক্ট অপশন স্টাইল */
+#navSelect {
+    padding: 5px;
+    border: none;
+    border-radius: 4px;
+}
+
+/* আইকন বাটনের স্টাইল */
+.icon-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.icon-btn:hover {
+    color: #ddd;
+}
+/* ড্রপডাউন মেনুর স্টাইল */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 80px;
+    background: white;
+    color: black;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    width: 200px;
+    text-align: center;
+}
+
+/* ইনপুট ফিল্ড */
+.dropdown-menu input {
+    width: 90%;
+    padding: 5px;
+    margin: 5px 0;
+}
+
+/* সেভ বাটন */
+#saveButton {
+    padding: 5px 10px;
+    border: none;
+    background: #28a745;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#saveButton:hover {
+    background: #218838;
+}
+.dropdown-menu {
+  display: none;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    background: white;
+    color: black;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    width: 200px;
+    text-align: center;
+    z-index: 1000;
+}
+.dropdown-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.dropdown-menu li {
+  padding: 5px;
+  border-bottom: 1px solid black;
+}
+/* 🔹 পপআপ ব্যাকগ্রাউন্ড (ডার্ক ট্রান্সপারেন্ট) */
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* 🔹 পপআপ কনটেন্ট */
+.popup-content {
+    background: white;
+    padding: 20px;
+    width: 350px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* 🔹 হেডিং */
+.popup-content h2 {
+    margin-bottom: 15px;
+    font-size: 20px;
+    color: #333;
+}
+
+/* 🔹 ইনপুট ফিল্ড */
+.popup-content label {
+    display: block;
+    text-align: left;
+    margin: 8px 0 5px;
+    font-size: 14px;
+    color: #555;
+}
+
+.popup-content input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* 🔹 বাটন ডিজাইন */
+.popup-content button {
+    width: 48%;
+    padding: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* 🔹 Save বাটন */
+#saveProduct {
+    background: #28a745;
+    color: white;
+}
+
+#saveProduct:hover {
+    background: #218838;
+}
+
+/* 🔹 Cancel বাটন */
+#cancelProduct {
+    background: #dc3545;
+    color: white;
+}
+
+#cancelProduct:hover {
+    background: #c82333;
+}
+
+/* 🔹 Fade In Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+/* টেবিল কন্টেইনার */
+.table-container {
+    max-height: 700px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+}
+
+/* টেবিল স্টাইল */
+table {
+    border-collapse: collapse;
+    table-layout: fixed; /* কলামের প্রস্থ ঠিক রাখতে বাধ্য করবে */
+}
+
+/* টেবিল হেডার স্টিকি করবে */
+thead {
+    position: sticky;
+    top: 0;
+    background-color: #f8f8f8;
+    z-index: 10;
+}
+
+/* প্রতিটি কলামের স্টাইল */
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    white-space: nowrap; /* লেখা ভাঙতে দেবে না */
+}
+
+/* ✅ প্রডাক্ট নেইম কলামের প্রস্থ ঠিক করা */
+th:nth-child(2), td:nth-child(2) {
+    min-width: 200px;
+    text-align: center;
+    white-space: nowrap; /* মাল্টি-লাইন টেক্সটের জন্য */
+}
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <!-- সিলেক্ট অপশন -->
+        <select id="navSelect">
+          
+        </select>
+
+        <!-- "+" আইকন বাটন -->
+        <button id="addButton" class="icon-btn"> 🆔
+        </button>
+                <!-- প্রডাক্ট এডড বাটন -->
+       <button id="openProductForm" class="icon-btn">এডড </button>
+
+        <!-- ডিটেইলস আইকন বাটন -->
+        <button id="detailsButton" class="icon-btn">
+            🔽
+        </button>
+    </nav>
+    
+    <div id="addDropdown" class="dropdown-menu">
+    <h3>কম্পানির নাম লেখুন</h3>
+    <input type="text" id="companyNameInput" placeholder="কম্পানির নাম">
+    <button id="saveButton">সেভ</button>
+</div>
+
+<!-- "ডিটেইলস" আইকন বাটন -->
+<div id="detailsDropdown" class="dropdown-menu">
+    <ul> </ul>
+</div>
+
+<!-- পপআপ ফর্ম -->
+<div id="productFormPopup" class="popup">
+    <div class="popup-content">
+        <h2>নতুন প্রডাক্ট যোগ করুন</h2>
+
+        <label for="productName">প্রডাক্ট নেইম:</label>
+        <input type="text" id="productName">
+
+        <label for="productNumber">প্রডাক্ট নাম্বার:</label>
+        <input type="number" id="productNumber">
+
+        <label for="purchasePrice">ক্রয়মূল্য:</label>
+        <input type="number" id="purchasePrice">
+
+        <label for="sellingPrice">বিক্রয়মূল্য:</label>
+        <input type="number" id="sellingPrice">
+
+        <label for="stockQuantity">স্টক সংখ্যা:</label>
+        <input type="text" id="stockQuantity">
+
+        <label for="damage">ডেমেজ:</label>
+        <input type="number" id="damage">
+
+        <button id="saveProduct" onclick="saveProductData()">Save</button>
+        <button id="cancelProduct">Cancel</button>
+    </div>
+</div>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>নং</th>
+                <th>প্রডাক্ট নেইম</th>
+                <th>ক্রয়মূল্য</th>
+                <th>বিক্রয়মূল্য</th>
+                <th>স্টক</th>
+                <th>স্টকমূল্য</th>
+                <th>ডেমেজ</th>
+                <th>ডেমেজমূল্য</th>
+                <th>অ্যাকশন</th>
+            </tr>
+        </thead>
+        <tbody id="productTableBody"></tbody>
+    </table>
+</div>
+
+<script type="module" src="firebase.js"></script>
+<script type="module">
+  // Import Firebase modules from firebase.js (এখানে firebase.js ফাইলটি যদি আলাদা থাকে, তবে সরাসরি import করুন)
+  import { db, auth } from "./firebase.js";
+  import {
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    setDoc,
+    updateDoc,
+    onSnapshot
+  } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+
+  // ----------------------------------------------------
+  // ১. UI - Dropdown (কম্পানি ও ডিটেইলস) টগল ফাংশন
+  document.addEventListener("DOMContentLoaded", function () {
+    const addButton = document.getElementById("addButton");
+    const addDropdown = document.getElementById("addDropdown");
+    const detailsButton = document.getElementById("detailsButton");
+    const detailsDropdown = document.getElementById("detailsDropdown");
+
+    addButton.addEventListener("click", function (event) {
+      event.stopPropagation();
+      toggleDropdown(addDropdown);
+    });
+
+    detailsButton.addEventListener("click", function (event) {
+      event.stopPropagation();
+      toggleDropdown(detailsDropdown);
+    });
+
+    function toggleDropdown(menu) {
+      if (menu.style.display === "block") {
+        menu.style.display = "none";
+      } else {
+        closeAllDropdowns();
+        menu.style.display = "block";
+      }
+    }
+
+    function closeAllDropdowns() {
+      document.querySelectorAll(".dropdown-menu").forEach(menu => {
+        menu.style.display = "none";
+      });
+    }
+
+    document.addEventListener("click", function (event) {
+      if (!addButton.contains(event.target) && !addDropdown.contains(event.target) &&
+          !detailsButton.contains(event.target) && !detailsDropdown.contains(event.target)) {
+        closeAllDropdowns();
+      }
+    });
+  });
+
+  // ----------------------------------------------------
+  // ২. কোম্পানির নাম সংরক্ষণ ও লোড করা
+  document.getElementById("saveButton").addEventListener("click", async function () {
+    let companyName = document.getElementById("companyNameInput").value.trim();
+    if (companyName === "") {
+      alert("কম্পানির নাম লিখুন!");
+      return;
+    }
+    // স্পেস (_) দিয়ে রিপ্লেস করুন
+    companyName = companyName.replace(/\s+/g, "_");
+
+    try {
+      // 'companyAll' কালেকশনে নতুন ডকুমেন্ট তৈরি
+      await setDoc(doc(db, "companyAll", companyName), {});
+      alert("কোম্পানি সফলভাবে সংরক্ষিত হয়েছে!");
+      document.getElementById("companyNameInput").value = "";
+      loadCompanyNames();
+    } catch (error) {
+      console.error("Error saving company:", error);
+      alert("সমস্যা হয়েছে: " + error.message);
+    }
+  });
+
+  const navSelect = document.getElementById("navSelect");
+
+  async function loadCompanyNames() {
+    try {
+      // নেট অন থাকলে default, নেট অফ থাকলে cache থেকে
+      const querySnapshot = await getDocs(collection(db, "companyAll"), 
+        navigator.onLine ? {} : { source: "cache" });
+      
+      navSelect.innerHTML = "";
+      let fragment = document.createDocumentFragment();
+      querySnapshot.forEach((docSnap) => {
+        let option = document.createElement("option");
+        option.value = docSnap.id;
+        option.textContent = docSnap.id.replace(/_/g, " ");
+        fragment.appendChild(option);
+      });
+      navSelect.appendChild(fragment);
+
+      // renderProductTable কল করা (যদি ফাংশনটি থাকে)
+      if (typeof window.renderProductTable === "function") {
+        window.renderProductTable();
+      } else {
+        console.error("renderProductTable ফাংশন পাওয়া যায়নি!");
+      }
+    } catch (error) {
+      console.error("ডাটা লোড করতে সমস্যা হয়েছে:", error);
+    }
+  }
+
+  // পেজ লোড হলে কোম্পানি লিস্ট লোড
+  document.addEventListener("DOMContentLoaded", loadCompanyNames);
+  navSelect.addEventListener("change", function () {
+    if (typeof window.renderProductTable === "function") {
+      window.renderProductTable();
+    } else {
+      console.error("renderProductTable ফাংশন পাওয়া যায়নি!");
+    }
+  });
+
+  // ----------------------------------------------------
+  // ৩. প্রডাক্ট ফর্ম পপআপ খোলা/বন্ধ করা
+  document.getElementById("openProductForm").addEventListener("click", function () {
+    document.getElementById("productFormPopup").style.display = "flex";
+    // পপআপ ইনপুট ফিল্ড খালি করা
+    document.getElementById("productName").value = "";
+    document.getElementById("productNumber").value = "";
+    document.getElementById("purchasePrice").value = "";
+    document.getElementById("sellingPrice").value = "";
+    document.getElementById("stockQuantity").value = "";
+    document.getElementById("damage").value = "";
+  });
+
+  document.getElementById("cancelProduct").addEventListener("click", function () {
+    document.getElementById("productFormPopup").style.display = "none";
+  });
+
+  document.getElementById("saveProduct").addEventListener("click", function () {
+    document.getElementById("productFormPopup").style.display = "none";
+  });
+
+  // ----------------------------------------------------
+  // ৪. স্টক ক্যালকুলেশনের ফাংশন
+  window.calculateExpression = function (input) {
+    try {
+      return new Function(`return ${input}`)();
+    } catch {
+      return input;
+    }
+  };
+
+  // ----------------------------------------------------
+  // ৫. প্রডাক্ট ডাটা সেভ করার ফাংশন (offline friendly)
+  window.saveProductData = async function () {
+    // ১. navSelect থেকে সিলেক্ট করা ভেলু, স্পেস (_) দিয়ে রিপ্লেস
+    let selectedValue = navSelect.value.trim().replace(/\s+/g, "_");
+    if (!selectedValue) {
+      alert("একটি কোম্পানি সিলেক্ট করুন!");
+      return;
+    }
+    // ২. Firestore থেকে ডকুমেন্ট রেফারেন্স
+    const docRef = doc(db, "companyAll", selectedValue);
+    let docSnap;
+    try {
+      // নেট অন থাকলে default, নেট অফ থাকলে cache থেকে
+      docSnap = await getDoc(docRef, navigator.onLine ? {} : { source: "cache" });
+    } catch (error) {
+      console.error("Error fetching document:", error);
+    }
+
+    // ৩. পপআপের ইনপুট ফিল্ড থেকে মান
+    let stockInput = document.getElementById("stockQuantity").value.trim();
+    let calculatedStockQuantity = calculateExpression(stockInput);
+
+    let productData = {
+      productName: document.getElementById("productName").value.trim(),
+      productNumber: document.getElementById("productNumber").value.trim(),
+      purchasePrice: document.getElementById("purchasePrice").value.trim(),
+      sellingPrice: document.getElementById("sellingPrice").value.trim(),
+      stockQuantity: calculatedStockQuantity,
+      damage: document.getElementById("damage").value.trim()
+    };
+
+    let productNumber = productData.productNumber;
+    if (!productNumber) {
+      alert("প্রডাক্ট নাম্বার দিতে হবে!");
+      return;
+    }
+
+    let updatedData = {};
+    updatedData[productNumber] = productData;
+
+    try {
+      if (docSnap && docSnap.exists()) {
+        // যদি ডকুমেন্ট থাকে, update করুন
+        await updateDoc(docRef, updatedData);
+      } else {
+        // না থাকলে, নতুন ডকুমেন্ট তৈরি করুন
+        await setDoc(docRef, updatedData);
+      }
+      alert("প্রডাক্ট ডাটা সংরক্ষিত হয়েছে!");
+      if (typeof window.renderProductTable === "function") {
+        window.renderProductTable();
+      }
+    } catch (error) {
+      console.error("Error saving product data:", error);
+      alert("সমস্যা হয়েছে: " + error.message);
+    }
+  };
+
+  // ----------------------------------------------------
+  // ৬. প্রডাক্ট ডাটা ফেচ ও টেবিলে প্রদর্শন (offline friendly)
+  // রিয়েল টাইমে প্রোডাক্ট টেবিল রেন্ডার ফাংশন (onSnapshot ব্যবহার করে)
+window.renderProductTable = function () {
+  let selectedValue = navSelect.value.trim().replace(/\s+/g, "_");
+  if (!selectedValue) {
+
+    return;
+  }
+  const docRef = doc(db, "companyAll", selectedValue);
+  
+  // onSnapshot() ব্যবহার করে রিয়েল টাইমে ডাটা শোনার ব্যবস্থা
+  onSnapshot(docRef, { includeMetadataChanges: true }, (docSnap) => {
+    if (!docSnap.exists()) {
+      alert("কোনো তথ্য পাওয়া যায়নি!");
+      return;
+    }
+    let data = docSnap.data();
+    let tableBody = document.getElementById("productTableBody");
+    tableBody.innerHTML = "";
+    let fragment = document.createDocumentFragment();
+    let rowIndex = 1;
+    
+    for (let productNumber in data) {
+      let product = data[productNumber];
+      let stockValue = Number(product.stockQuantity) || 0;
+      let purchasePrice = Number(product.purchasePrice) || 0;
+      let damageValue = Number(product.damage) || 0;
+      let stockTotal = stockValue * purchasePrice;
+      let damageTotal = damageValue * purchasePrice;
+      let row = document.createElement("tr");
+      row.innerHTML = `
+          <td>${product.productNumber}</td>
+          <td>${product.productName}</td>
+          <td>${purchasePrice}</td>
+          <td>${product.sellingPrice}</td>
+          <td>${stockValue}</td>
+          <td>${stockTotal.toFixed(2)}</td>
+          <td>${damageValue}</td>
+          <td>${damageTotal.toFixed(2)}</td>
+          <td>
+              <button onclick="editProduct(this.closest('tr'))">✏️</button>
+              <button onclick="saveProduct('${productNumber}')">💾</button>
+          </td>
+      `;
+      fragment.appendChild(row);
+      rowIndex++;
+    }
+    tableBody.appendChild(fragment);
+    updateStockAndDamageSummary();
+  }, (error) => {
+    console.error("Error in onSnapshot:", error);
+  });
+};
+
+  // ----------------------------------------------------
+  // ৭. স্টক ও ডেমেজ সমারি আপডেট
+  function updateStockAndDamageSummary() {
+    let totalStockValue = 0;
+    let totalDamageValue = 0;
+    document.querySelectorAll("#productTableBody tr").forEach(row => {
+      let stockVal = parseFloat(row.children[5].textContent) || 0;
+      let damageVal = parseFloat(row.children[7].textContent) || 0;
+      totalStockValue += stockVal;
+      totalDamageValue += damageVal;
+    });
+    let detailsDropdown = document.getElementById("detailsDropdown");
+    let ul = detailsDropdown.querySelector("ul");
+    ul.innerHTML = "";
+    let stockLi = document.createElement("li");
+    stockLi.textContent = `মোট স্টকমূল্য: ${totalStockValue.toFixed(2)}`;
+    ul.appendChild(stockLi);
+    let damageLi = document.createElement("li");
+    damageLi.textContent = `মোট ডেমেজমূল্য: ${totalDamageValue.toFixed(2)}`;
+    ul.appendChild(damageLi);
+  }
+
+  // ----------------------------------------------------
+  // ৮. প্রডাক্ট এডিট ফাংশন
+  window.editProduct = function (row) {
+    // রো থেকে তথ্য সংগ্রহ
+    const productNumber = row.children[0].textContent; 
+    const productName = row.children[1].textContent;
+    const purchasePrice = row.children[2].textContent;
+    const sellingPrice = row.children[3].textContent;
+    const stockQuantity = row.children[4].textContent;
+    const damage = row.children[6].textContent;
+    // পপআপ ফর্মে তথ্য ভর্তি
+    document.getElementById("productName").value = productName;
+    document.getElementById("productNumber").value = productNumber;
+    document.getElementById("purchasePrice").value = purchasePrice;
+    document.getElementById("sellingPrice").value = sellingPrice;
+    document.getElementById("stockQuantity").value = stockQuantity;
+    document.getElementById("damage").value = damage;
+    document.getElementById("productFormPopup").style.display = "flex";
+  };
+
+  // ----------------------------------------------------
+  // ৯. ইউজার অথেনটিকেশন স্টেট চেক (স্টক পেজে প্রবেশের আগে)
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log("User is logged in:", user.uid);
+      window.renderProductTable();
+    } else {
+      console.error("User not logged in. Redirecting to login page.");
+      window.location.href = "login.html";
+    }
+  });
+</script>
+
+
+</body>
+</html>

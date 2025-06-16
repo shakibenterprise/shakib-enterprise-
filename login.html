@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="login-container">
+    <h1>Login</h1>
+    <form id="auth-form">
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="Enter your email" required />
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="Enter your password" required />
+      <label>
+        <input type="checkbox" id="rememberMe" /> Save credentials on this device
+      </label>
+      <button type="button" id="login-button">Login</button>
+      <button type="button" id="signup-button">Sign Up</button>
+    </form>
+    <p id="error-message" style="color: red;"></p>
+  </div>
+ 
+  <script type="module" src="firebase.js"></script>
+  <!-- 🔗 Firebase Core -->
+  <script type="module">
+    import { auth } from "./firebase.js";
+    import {
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword
+    } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+
+    // DOM elements
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const loginButton = document.getElementById("login-button");
+    const signupButton = document.getElementById("signup-button");
+    const rememberMeCheckbox = document.getElementById("rememberMe");
+    const errorMessage = document.getElementById("error-message");
+
+    // Load saved credentials if available
+    if (localStorage.getItem("rememberMe") === "true") {
+      emailInput.value = localStorage.getItem("email") || "";
+      passwordInput.value = localStorage.getItem("password") || "";
+      rememberMeCheckbox.checked = true;
+    }
+
+    // 🔐 Login handler
+    loginButton.addEventListener("click", () => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+      const rememberMe = rememberMeCheckbox.checked;
+
+      if (!email || !password) {
+        errorMessage.textContent = "⚠️ Please enter both email and password!";
+        return;
+      }
+
+      if (navigator.onLine) {
+        // Online login with Firebase Auth
+        signInWithEmailAndPassword(auth, email, password)
+          .then((userCredential) => {
+            console.log("✅ Login successful:", userCredential.user);
+            if (rememberMe) {
+              localStorage.setItem("rememberMe", "true");
+              localStorage.setItem("email", email);
+              localStorage.setItem("password", password);
+            } else {
+              localStorage.removeItem("rememberMe");
+              localStorage.removeItem("email");
+              localStorage.removeItem("password");
+            }
+
+            // Optional: Save user for offline login
+            localStorage.setItem("user", JSON.stringify({ email, password }));
+
+            window.location.href = "home.html";
+          })
+          .catch((error) => {
+            console.error("❌ Login error:", error.message);
+            errorMessage.textContent = "❌ Invalid email or password!";
+          });
+      } else {
+        // Offline login
+        const storedData = localStorage.getItem("user");
+        if (storedData) {
+          const storedUser = JSON.parse(storedData);
+          if (storedUser.email === email && storedUser.password === password) {
+            window.location.href = "home.html";
+          } else {
+            errorMessage.textContent = "⚠️ Invalid credentials in offline mode!";
+          }
+        } else {
+          errorMessage.textContent = "⚠️ No stored credentials found!";
+        }
+      }
+    });
+
+    // 🧾 Signup handler
+    signupButton.addEventListener("click", () => {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+
+      if (!email || !password) {
+        errorMessage.textContent = "⚠️ Please enter email and password to sign up!";
+        return;
+      }
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          console.log("✅ Account created:", userCredential.user);
+          alert("🎉 Account created! Now you can log in.");
+        })
+        .catch((error) => {
+          console.error("❌ Sign-up error:", error.message);
+          errorMessage.textContent = "❌ Could not create account. Try again!";
+        });
+    });
+  </script>
+</body>
+</html>

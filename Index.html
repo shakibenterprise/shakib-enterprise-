@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Splash Screen</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #000;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    img {
+      max-width: 200px;
+      height: auto;
+      animation: fadeIn 2s ease-in-out;
+      filter: drop-shadow(0 0 20px #00d4ff);
+    }
+
+    .app-name {
+      margin-top: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #00d4ff;
+      animation: fadeIn 2.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <img src="logo.png" alt="App Logo" />
+  <div class="app-name">Shakib Enterprise</div>
+
+  <script type="module">
+    // 3 সেকেন্ড পর login.html পেজে রিডাইরেক্ট করবে
+    setTimeout(() => {
+      window.location.href = "login.html";
+    }, 3000);
+  </script>
+</body>
+</html>

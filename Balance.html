@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Navbar Popup</title>
+  <style>
+  body {
+  font-family: Arial;
+  margin: 0;
+  padding: 0;
+}
+.navbar {
+  background-color: #333;
+  color: white;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+button {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.popup {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 15px;
+  padding: 30px 40px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  width: 300px;
+  animation: slideIn 0.3s ease-in-out;
+}
+
+.popup-content h3 {
+  margin-top: 0;
+  font-size: 20px;
+  text-align: center;
+  color: #333;
+}
+
+.popup-content label {
+  display: block;
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: #444;
+}
+
+.popup-content select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.popup-content button {
+  margin-top: 15px;
+  width: 100%;
+  padding: 10px;
+  background-color: #008cff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.popup-content button:hover {
+  background-color: #006acc;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.hidden {
+  display: none;
+}
+
+.main-body {
+  padding: 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.summary-bar {
+  display: flex;
+  justify-content: space-around;
+  background-color: #f3f3f3;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.add-transaction {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#toggleDropdown {
+  background-color: #0077cc;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+#toggleDropdown:hover {
+  background-color: #005fa3;
+}
+
+.dropdown {
+  margin-top: 15px;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  width: 300px;
+  margin: auto;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.hidden {
+  display: none;
+}
+
+.dropdown label {
+  display: block;
+  margin: 10px 0;
+  font-weight: 500;
+}
+
+.dropdown input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+#dateInput[readonly] {
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.status-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+.status-btn {
+  flex: 1;
+  margin: 0 5px;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+.status-btn[data-status="জমা"] { background-color: #2ecc71; }
+.status-btn[data-status="পেলাম"] { background-color: #3498db; }
+.status-btn[data-status="ডেমেজ"] { background-color: #e74c3c; }
+
+.transaction-list {
+  list-style: none;
+  padding: 0;
+}
+.transaction-list li {
+  background: #f9f9f9;
+  border-left: 5px solid #888;
+  margin-bottom: 10px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+.day-picker {
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-top: 5px;
+  background: #f9f9f9;
+  border: 1px solid #ccc;
+  padding: 10px;
+  max-width: 220px;
+  position: absolute;
+  z-index: 10;
+}
+
+.day-picker button {
+  padding: 6px;
+  border: none;
+  background: #e0e0e0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.day-picker button:hover {
+  background: #007bff;
+  color: white;
+}
+.dropdown select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+</style>
+</head>
+<body>
+  <div class="navbar">
+    <span id="selectedValues">Year - Month - Company</span>
+    <button id="openPopup">Select Options</button>
+  </div>
+
+  <div id="popup" class="popup hidden">
+    <div class="popup-content">
+      <h3>Select Report Info</h3>
+      <label>Year:
+        <select id="yearSelect">
+                      <script>
+                let currentYear = new Date().getFullYear();
+                for (let i = currentYear; i >= 2024; i--) {
+                    document.write(`<option value="${i}">${i}</option>`);
+                }
+            </script>
+        </select>
+      </label>
+      <label>Month:
+        <select id="monthSelect">
+ <option value="January">জানুয়ারি</option>
+            <option value="February">ফেব্রুয়ারি</option>
+            <option value="March">মার্চ</option>
+            <option value="April">এপ্রিল</option>
+            <option value="May">মে</option>
+            <option value="June">জুন</option>
+            <option value="July">জুলাই</option>
+            <option value="August">আগস্ট</option>
+            <option value="September">সেপ্টেম্বর</option>
+            <option value="October">অক্টোবর</option>
+            <option value="November">নভেম্বর</option>
+            <option value="December">ডিসেম্বর</option>
+        </select>
+      </label>
+      <label>Company:
+        <select id="companySelect">
+          <option value="">Loading...</option>
+        </select>
+      </label>
+      <button id="okBtn">OK</button>
+      <button id="closeBtn">close</button>
+    </div>
+  </div>
+  
+<!-- Main Body Container -->
+<div class="main-body">
+  
+  <!-- Top Summary Section -->
+  <div class="summary-bar">
+    <span id="totalDeposit"></span>
+    <span id="totalReceived">পেলাম: 0</span>
+    <span id="totalRemaining">অবশিষ্ট: 0</span>
+    <span id="totalDamage">ডেমেজ: 0</span>
+  </div>
+
+  <!-- Transaction List -->
+  <ul id="transactionList" class="transaction-list"></ul>
+
+  <!-- Add Transaction Button -->
+  <div class="add-transaction">
+    <button id="toggleDropdown">Add Transaction</button>
+
+    <!-- Dropdown Menu -->
+    <div id="dropdownMenu" class="dropdown hidden">
+      <label>তারিখ:
+        <input type="text" id="dateInput" readonly placeholder="dd">
+        <div id="dayPicker" class="day-picker hidden"></div>
+      </label>
+      <label>বার:
+        <select id="dayName">
+          <option value="">বার নির্বাচন করুন</option>
+          <option>রবি</option>
+          <option>সোম</option>
+          <option>মঙ্গল</option>
+          <option>বুধ</option>
+          <option>বৃহস্পতি</option>
+          <option>শুক্র</option>
+          <option>শনি</option>
+        </select>
+      </label>
+      <label>এমাউন্ট:
+        <input type="number" id="amountInput" placeholder="Amount">
+      </label>
+      <div class="status-buttons">
+        <button class="status-btn" data-status="জমা">জমা</button>
+        <button class="status-btn" data-status="পেলাম">পেলাম</button>
+        <button class="status-btn" data-status="ডেমেজ">ডেমেজ</button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+   <script type="module" src="firebase.js"></script>
+<script type="module">
+  
+  // Import Firebase modules from firebase.js (এখানে firebase.js ফাইলটি যদি আলাদা থাকে, তবে সরাসরি import করুন)
+  import { db, auth } from "./firebase.js";
+  import {
+    collection,
+    doc,
+    getDoc,
+    getDocs,
+    setDoc,
+    updateDoc,
+    onSnapshot,
+    arrayUnion
+  } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+  
+// DOM Elements
+const popup = document.getElementById('popup');
+const openPopup = document.getElementById('openPopup');
+const okBtn = document.getElementById('okBtn');
+const closeBtn = document.getElementById('closeBtn');
+const companySelect = document.getElementById('companySelect');
+const yearSelect = document.getElementById('yearSelect');
+const monthSelect = document.getElementById('monthSelect');
+const selectedValues = document.getElementById('selectedValues');
+
+// Show Popup
+openPopup.addEventListener('click', () => {
+  popup.classList.remove('hidden');
+});
+
+closeBtn.addEventListener('click', () => {
+ popup.classList.add('hidden');
+});
+
+// Load Companies from Firestore
+async function loadCompanies() {
+  companySelect.innerHTML = "<option value=''>Select Company</option>";
+  const querySnapshot = await getDocs(collection(db, "companyAll"));
+  querySnapshot.forEach((doc) => {
+    const id = doc.id;
+    const displayName = id.includes("_") ? id.replace(/_/g, " ") : id;
+    const option = document.createElement("option");
+    option.value = id;
+    option.textContent = displayName;
+    companySelect.appendChild(option);
+  });
+}
+loadCompanies();
+
+// OK Button - Update navbar
+okBtn.addEventListener('click', () => {
+  const year = yearSelect.value;
+  const month = monthSelect.value;
+  const companyText = companySelect.options[companySelect.selectedIndex]?.text || "";
+
+  if (year && month && companyText) {
+    selectedValues.textContent = `${year} - ${month} - ${companyText}`;
+  }
+  popup.classList.add('hidden');
+  fetchTransactionsFromFirestore();
+});
+
+const toggleBtn = document.getElementById('toggleDropdown');
+const dropdown = document.getElementById('dropdownMenu');
+const dateInput = document.getElementById('dateInput');
+const amountInput = document.getElementById('amountInput');
+const transactionList = document.getElementById('transactionList');
+const statusBtns = document.querySelectorAll('.status-btn');
+const daySelect = document.getElementById('dayName');
+const dayPicker = document.getElementById('dayPicker');
+
+// Show/hide dropdown
+toggleBtn.addEventListener('click', () => {
+  dropdown.classList.toggle('hidden');
+});
+
+// Build custom date picker
+for (let i = 1; i <= 31; i++) {
+  const btn = document.createElement('button');
+  btn.textContent = i;
+  btn.addEventListener('click', () => {
+    dateInput.value = i.toString().padStart(2, '0');
+    dayPicker.style.display = 'none';
+  });
+  dayPicker.appendChild(btn);
+}
+
+// Show date picker
+dateInput.addEventListener('click', () => {
+  dayPicker.style.display = 'grid';
+});
+
+// Hide date picker when clicking outside
+document.addEventListener('click', (e) => {
+  if (!dateInput.contains(e.target) && !dayPicker.contains(e.target)) {
+    dayPicker.style.display = 'none';
+  }
+});
+
+// Add transaction
+statusBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const date = dateInput.value;
+    const dayName = daySelect.value;
+    const amount = amountInput.value;
+    const status = btn.dataset.status;
+
+    if (!(date && dayName && amount)) {
+      alert('তারিখ, বার এবং এমাউন্ট দিতে হবে');
+      return;
+    }
+
+    const li = document.createElement('li');
+    li.innerHTML = `<strong>${date}</strong> || ${dayName} || ${status} || <strong>${amount}</strong> টাকা`;
+    li.style.borderLeft = `4px solid ${getStatusColor(status)}`;
+
+    // এখানে data- অ্যাট্রিবিউট দিয়ে রাখছি
+    li.dataset.status = status;
+    li.dataset.amount = amount;
+
+    transactionList.appendChild(li);
+
+    // Firestore-এ ডাটা সেভ করা
+    saveTransactionToFirestore(date, dayName, status, amount);
+
+    // ক্লিয়ার
+    dateInput.value = '';
+    daySelect.selectedIndex = 0;
+    amountInput.value = '';
+    dropdown.classList.add('hidden');
+
+    // summary আপডেট
+    updateSummary();
+  });
+});
+
+
+
+function getStatusColor(status) {
+  switch (status) {
+    case 'জমা': return '#2ecc71';
+    case 'পেলাম': return '#3498db';
+    case 'ডেমেজ': return '#e74c3c';
+    default: return '#999';
+  }
+}
+
+// ট্রানজেকশন সেভ ফাংশন
+function saveTransactionToFirestore(date, day, status, amount) {
+  const year = yearSelect.value;
+  const month = monthSelect.value;
+  const company = companySelect.options[companySelect.selectedIndex]?.text || "";
+
+  if (!year || !month || !company) {
+    alert("নেভবার থেকে বছর, মাস ও কোম্পানি সিলেক্ট করুন।");
+    return;
+  }
+
+  const docId = `${year}-${month}`;
+  const transactionData = {
+    date,
+    day,
+    status,
+    amount: parseFloat(amount),
+    timestamp: new Date().toISOString()
+  };
+
+  const docRef = doc(db, "Balance", docId);
+
+  getDoc(docRef).then((docSnap) => {
+    if (docSnap.exists()) {
+      updateDoc(docRef, {
+        [company]: arrayUnion(transactionData)
+      });
+    } else {
+      setDoc(docRef, {
+        [company]: [transactionData]
+      });
+    }
+  }).catch((error) => {
+    console.error("ডাটা সেভ করতে সমস্যা:", error);
+  });
+}
+
+window.fetchTransactionsFromFirestore = async function () {
+  const year = yearSelect.value;
+  const month = monthSelect.value;
+  const company = companySelect.options[companySelect.selectedIndex]?.text || "";
+
+  if (!year || !month || !company) {
+    alert("নেভবার থেকে বছর, মাস এবং কোম্পানি নির্বাচন করুন।");
+    return;
+  }
+
+  const docId = `${year}-${month}`;
+  const docRef = doc(db, "Balance", docId);
+
+  try {
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+
+      if (data[company] && Array.isArray(data[company])) {
+        const transactions = data[company];
+
+        // তারিখ অনুযায়ী sort করা (dd/mm/yyyy format ধরে)
+        transactions.sort((a, b) => {
+          const [dayA, monthA, yearA] = a.date.split('/').map(Number);
+          const [dayB, monthB, yearB] = b.date.split('/').map(Number);
+          const dateA = new Date(yearA, monthA - 1, dayA);
+          const dateB = new Date(yearB, monthB - 1, dayB);
+          return dateA - dateB;
+        });
+
+        // আগের লিস্ট ক্লিয়ার
+        transactionList.innerHTML = '';
+
+// Firestore থেকে ডেটা লোড করে লিস্ট তৈরির অংশ
+transactions.forEach(trx => {
+  const li = document.createElement('li');
+  // ভিজ্যুয়াল টেক্সট
+  li.innerHTML = `<strong>${trx.date}</strong> || ${trx.day} || ${trx.status} || <strong>${trx.amount}</strong> টাকা`;
+
+  // বর্ডার রং
+  li.style.borderLeft = `4px solid ${getStatusColor(trx.status)}`;
+  li.style.padding = '6px';
+
+  // data- অ্যাট্রিবিউট
+  li.dataset.status = trx.status;
+  li.dataset.amount = trx.amount;
+
+  transactionList.appendChild(li);
+});
+
+// শেষে summary আপডেট
+updateSummary();
+
+
+      } else {
+        transactionList.innerHTML = '<li>এই কোম্পানির কোনো ট্রানজেকশন নেই।</li>';
+      }
+    } else {
+      transactionList.innerHTML = '<li>এই বছর-মাস এর কোনো ডাটা নেই।</li>';
+    }
+  } catch (error) {
+    console.error("ডাটা ফেচ করতে সমস্যা:", error);
+    alert("ডাটা লোড করতে সমস্যা হয়েছে!");
+  }
+}
+
+/**
+ * Update the summary bar by summing up amounts from all <li> in #transactionList
+ */
+window.updateSummary = function () {
+  const depositSpan   = document.getElementById('totalDeposit');
+  const receivedSpan  = document.getElementById('totalReceived');
+  const remainingSpan = document.getElementById('totalRemaining');
+  const damageSpan    = document.getElementById('totalDamage');
+
+  let totalDeposit  = 0;
+  let totalReceived = 0;
+  let totalDamage   = 0;
+
+  document.querySelectorAll('#transactionList li').forEach(li => {
+    const status = li.dataset.status;
+    const amount = parseFloat(li.dataset.amount) || 0;
+
+    if (status === 'জমা') {
+      totalDeposit += amount;
+    } else if (status === 'পেলাম') {
+      totalReceived += amount;
+    } else if (status === 'ডেমেজ') {
+      totalDamage += amount;
+    }
+  });
+
+  const totalRemaining = totalDeposit - totalReceived;
+
+  depositSpan.textContent   = `জমা দিলাম: ${totalDeposit}`;
+  receivedSpan.textContent  = `পেলাম: ${totalReceived}`;
+  damageSpan.textContent    = `ডেমেজ: ${totalDamage}`;
+  remainingSpan.textContent = `অবশিষ্ট: ${totalRemaining}`;
+}
+
+
+
+      
+    </script>
+</body>
+</html>

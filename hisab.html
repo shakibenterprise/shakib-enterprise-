@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>সাকিব এন্টারপ্রাইজ</title>
+    <link rel="stylesheet" href="hisab.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+        <div id="dropdown-menu" class="dropdown-content"> <ul id="dropdown-list"></ul>
+         </div>
+         
+      <!-- নেভবার -->
+    <div class="navbar">
+        <input type="text" id="roadName" placeholder="রোড">
+       <input type="text" id="dsr-name" placeholder="ডিএসার" readonly onclick="toggleDropdown()">
+       <input type="date" id="orderDate">
+        <input type="number" id="totalSell"  readonly="">
+        <label for="totalSell">টাকা বিক্রি </label>
+        <input type="number" id="joma">
+        <label for="joma">টাকা জমা</label>
+        <input type="number" id="dueAmount" readonly>
+        <label for="dueAmount">টাকা বাকি</label>
+    </div>
+
+            
+        <!-- টেবিল -->
+    <div class="table-container" id="tabliContainer">
+      <table id="mainTable" class="product-table">
+    <thead>
+        <tr>
+            <th>নং</th>
+            <th>প্রডাক্টের নাম</th>
+            <th>অর্ডার</th>
+            <th>ফেরত</th>
+            <th>বিক্রি</th>
+            <th>মূল্য</th>
+            <th>মোট সেল</th>
+            <th>স্টক</th>
+            <th>ডেমেজ</th>
+            <th>ডেমমূল্য</th>
+            <th>অপশন</th>
+        </tr>
+      </thead>
+    </table>
+
+    </div>
+      <button class="plus-btn-small" onclick="openProductPopup()"><i class="fas fa-plus"></i></button>   
+      
+       
+       
+        <!-- পপআপ -->
+    <div class="popup" id="productPopup">
+       <select id="companySelect">
+          
+        </select>
+        <h3>প্রডাক্ট লিস্ট</h3>
+        <div id="productList">
+            <!-- প্রোডাক্ট নাম এবং চেকবক্স এখানে জাভাস্ক্রিপ্ট দিয়ে যোগ হবে -->
+        </div>
+        <div class="popup-buttons">
+            <button onclick="generateTables()">ওকে</button>
+            <button onclick="closeProductPopup()">বাতিল</button>
+        </div>
+    </div>
+    
+    
+      <!-- ফুটার -->
+    <footer class="footer-container">
+        <div class="footer-textarea">
+            <textarea id="notes" placeholder="মন্তব্য লিখুন..." maxlength="250"></textarea>
+        </div>
+
+        <div class="footer-buttons">
+            <button class="save-btn" onclick=" saveTableData();">সেভ</button>
+            <button id="draftButton" class="draft-btn" onclick="loadDrafts()">ড্রাফ্ট</button>
+               <button class="equal-btn" onclick="calculateTotalSell();"><i class="fas fa-equals"></i></button>
+             
+        </div>
+    </footer>
+
+<!-- পপআপ ডিভ -->
+<div id="draftPopup" style="display: none; position: fixed; top: 20%; left: 50%; transform: translateX(-50%); background: white; padding: 20px; border: 1px solid #ccc; box-shadow: 0 4px 8px rgba(0,0,0,0.1); max-height: 400px; overflow-y: auto;">
+    <h3>ড্রাফ্ট হিসাবের তালিকা</h3>
+    <ul id="draftList"> </ul>
+    <button onclick="closeDraftPopup()">বন্ধ করুন</button>
+</div>
+
+
+<script type="module" src="firebase.js"> </script>
+
+<script type="module" src="hisab.js"> </script>
+</body>
+</html>

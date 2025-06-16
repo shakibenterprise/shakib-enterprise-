@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Two‑Line Ultra Slim Navbar</title>
+  <style>
+  body{
+    padding: 0;
+    margin: 0;
+  }
+    .navbar {
+      display: flex;
+      height: 48px;
+      width: 402px;
+      overflow: auto;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.3rem 0.5rem;
+      background: #2c3e50;
+      border-radius: 0.2rem;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+      margin: 1px;
+    }
+    .navbar .field {
+      display: flex;
+      flex-direction: column;
+      flex: 0 0 auto;    /* ফিক্সড আকার */
+      text-align: center;
+    }
+    .navbar label {
+      color: #ecf0f1;
+      font-size: 0.85rem;
+      margin-bottom: 0.08rem;
+    }
+    .navbar input[type="text"] {
+      padding: 0.4rem 0.2rem;
+      border: none;
+      border-radius: 0.15rem;
+      font-size: 14px;
+      width: 5rem;      /* আরও ছোট উইথ */
+      background: #ecf0f9;
+    }
+    .navbar input[type="text"]:focus {
+      outline: 1px solid #3498db;
+      background: #fff;
+    }
+    .navbar button {
+      padding: 0.50rem 0.2rem;
+      background: #e67e22;
+      color: #fff;
+      border: none;
+      border-radius: 0.15rem;
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 10px;
+    }
+    .navbar button:hover {
+      background: #d35400;
+    }
+  #month {
+    width: 100px;
+  }
+.popup {
+    position: fixed;
+    top: 120px;
+    left: 100px;
+    width: 150px;
+    height: 200px;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+}
+
+/* পপআপ বক্স স্টাইল */
+.popup-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    height: 300px;
+    width: 200px;
+    position: fixed;
+}
+
+/* লেবেল ও সিলেক্ট বক্স স্টাইল */
+.popup-content label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: left;
+}
+
+.popup-content select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+/* ওকে বাটন স্টাইল */
+.popup-content button {
+    margin-top: 10px;
+    padding: 8px 15px;
+    border: none;
+    background: #007BFF;
+    color: white;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 45%;
+    display: inline-block;
+    text-align: center;
+}
+
+.popup-content button:hover {
+    background: #0056b3;
+}
+#srDropdown {
+  display: none;
+  position: absolute;
+  top: 3.2rem;
+  right: 1rem;
+  width: 10rem;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+  z-index: 1000;
+  font-family: sans-serif;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+/* SR + percent একসাথে রাখতে এই গ্রুপ */
+.sr-input-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2px;
+  gap: 1px;
+}
+
+#newSr {
+  width: 80%;
+  padding: 5px;
+  border-radius: 8px;
+  border: 1px solid #E2DFD2;
+  outline: none;
+}
+#newdSr {
+  width: 90%;
+  padding: 5px;
+  border-radius: 8px;
+  border: 1px solid #E2DFD2;
+  outline: none;
+}
+
+/* বিশেষভাবে পার্সেন্ট ইনপুট ছোট */
+.percent-input {
+  width: 20%;
+  padding: 5px;
+  border-radius: 8px;
+  border: 1px solid #E2DFD2;
+  outline: none;
+}
+#srDropdown input:hover {
+  border: 1px solid #FF7518;
+}
+
+#addSrButton {
+  padding: 0.45rem;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 0.3rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  width: 100%;
+  margin-top: 3px;
+}
+
+#addSrButton:hover {
+  background-color: #2c80b4;
+}
+
+#srDsrList {
+  margin-top: 0px;
+  font-family: Arial, sans-serif;
+}
+
+#srDsrList h5 {
+  font-size: 14px;
+  margin: 0px;
+  padding: 0px;
+  border-bottom: 1px solid #ccc;
+}
+
+#srDsrList ul {
+  list-style-type: none;
+  padding-left: 10px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+#srDsrList li {
+  font-size: 13px;
+  color: #333;
+  padding: 1px;
+}
+
+
+/* রিসেট ইনপুট/বাটন স্টাইল */
+    #salesTable input, select, button, textarea {
+      all: unset;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+
+    /* টেবিল কনটেইনার: ফিক্সড সাইজ + স্ক্রল */
+    #tableContainer {
+      max-width: 1200px;
+      height: 700px; /* প্রয়োজনমতো পরিবর্তন করুন */
+      overflow: auto;
+      border: 1px solid #ccc;
+      padding: 3px;
+    }
+
+    /* টেবিল স্টাইল */
+    #salesTable {
+      max-width: 1200px; /* নির্দিষ্ট width */
+      border-collapse: collapse;
+    }
+    #salesTable th,
+    #salesTable td {
+      border: 1px solid #ddd;
+      padding: 2px; /* মাঝারি সাইজ */
+      text-align: center;
+      font-size: 16px;
+      max-width: 150px;
+      height: 25px;
+      overflow: hidden;
+    }
+    /* স্টিকি হেডার */
+    #salesTable thead th {
+      position: sticky;
+      top: 0;
+      background: #2c3e50;
+      color: #fff;
+      z-index: 2;
+      max-width: 120px;
+      padding: 3px;
+      margin: 0;
+      font-size: 16px;
+      height: 25px;
+      white-space: nowrap;
+    }
+    #salesTable thead th:not(:first-child):not(:nth-last-child(2)) {
+      min-width: 75px;
+    }
+
+    /* DSR সেল: single input */
+    .dsr-cell {
+      position: relative;
+      cursor: pointer;
+    }
+    .dsr-cell input {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      font-size: 16px;
+      text-align: center;
+      background: #f9f9f9;
+      outline: none;
+    }
+
+    /* SR Menu স্টাইল */
+    .sr-menu {
+      position: relative;
+      background: #ffffff;
+      border: 1px solid #ccc;
+      padding: 12px;
+      border-radius: 8px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+      z-index: 1000;
+      max-width: 100px;
+    }
+    .sr-menu select {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 5px;
+      font-size: 14px;
+    }
+    .sr-inputs {
+      margin-top: 10px;
+    }
+    .sr-input-wrapper {
+      margin-bottom: 6px;
+    }
+    .sr-input-wrapper label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 2px;
+    }
+    .sr-input-wrapper input {
+      width: 90%;
+      padding: 4px;
+    }
+    .sr-menu-buttons {
+      margin-top: 6px;
+      display: flex;
+      justify-content: space-between;
+      gap: 3px;
+    }
+    .sr-menu-buttons button {
+      padding: 4px;
+      border: none;
+      border-radius: 4px;
+      background: #3498db;
+      color: white;
+      cursor: pointer;
+    }
+    .sr-menu-buttons button:hover {
+      background: #2980b9;
+    }
+
+    /* Textarea (মোট খরচ) */
+    .expense-textarea {
+      width: 300px;
+      height: 150px;
+      margin-top: 5px;
+      padding: 4px;
+      font-size: 13px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      text-align: left;
+      position: relative;
+    }
+
+    /* Action buttons পাশাপাশি */
+    .action-cell {
+      display: flex;
+      gap: 0.3rem;
+      justify-content: center;
+    }
+    .action-cell button {
+      width: 2.3rem;
+      height: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.2rem;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+    .edit-btn {
+      background: #007bff;
+      color: #fff;
+    }
+    .save-btn {
+      background: #28a745;
+      color: #fff;
+    }
+    .save-btn:disabled {
+      background: #ccc;
+      color: #666;
+    }
+
+    /* সাধারণ ইনপুট সেল স্টাইল */
+    #salesTable td input {
+      width: 100%;
+      padding: 0;
+      font-size: 16px;
+      border-radius: 0.2rem;
+      background: #f9f9f9;
+      height: 25px;
+      outline: none;
+    }
+    #salesTable td textarea {
+      width: 100%;
+      padding: 0;
+      font-size: 14px;
+      border-radius: 0.2rem;
+      background: #f9f9f9;
+      border: 1px solid #ccc;
+    }
+    #salesTable td textarea {
+      resize: vertical;
+    }
+
+    /* রো-হোভার ইফেক্ট */
+    #salesTable tbody tr:hover {
+      background: #f5f5f5;
+    }
+.sidebar-sell-menu {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 270px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: -2px 0 6px rgba(0,0,0,0.1);
+  padding: 10px;
+  transition: right 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-sell-menu.active {
+  right: 0;
+}
+.sidebar-sell-menu h4 {
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+  font-size: 20px;
+}
+.sell-menu-top {
+  flex: 0 0 35%;
+  overflow-y: auto;
+  border-bottom: 1px solid #ddd;
+  padding-right: 5px;
+  max-height: 250px;
+}
+
+.sell-menu-bottom {
+  flex: 1;
+  padding-top: 10px;
+  /* ভবিষ্যতে এখানে কিছু যোগ করা যাবে */
+}
+
+.sell-menu-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 8px;
+}
+
+.sell-menu-list li {
+  padding: 6px 5px;
+  border-bottom: 1px solid #eee;
+  font-size: 15px;
+}
+
+
+.dsr-item {
+  color: #2c3e50;
+  font-weight: bold;
+}
+
+.sr-item {
+  color: #27ae60;
+}
+#closeSellMenu {
+  position: absolute;
+  top: 2px;
+  right: 15px;
+  font-size: 40px;
+  font-weight: bold;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: red;
+  transition: color 0.2s ease;
+}
+
+#closeSellMenu:hover {
+  color: black;
+}
+#srDsrList {
+  margin-top: 5px;
+  margin-left: 0px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  width: 250px;
+  background-color: #f9f9f9;
+  font-family: sans-serif;
+}
+
+#srDsrList label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  text-align: center;
+}
+
+#srSelect {
+  padding: 5px 8px;
+  font-size: 16px;
+  margin-bottom: 5px;
+  margin-left: 13px;
+  border: 1px solid black;
+  width: 90%;
+  text-align: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+#srResultListD {
+  width: 100%;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+#srResultList {
+  list-style: none;
+  padding-left: 0;
+  margin-bottom: 5px;
+  border: 1px solid #ddd;
+  padding: 5px;
+  background: #fff;
+}
+
+}
+#srResultList li {
+  margin: 0px;
+  font-size: 14px;
+}
+
+.sr-summary-inputs {
+  margin-bottom: 6px;
+  display: flex;
+}
+
+.sr-summary-inputs input {
+  padding: 6px 10px;
+  width: 95px;
+  margin-right: 13px;
+  margin-top: 5px;
+  border-radius: 10px;
+}
+
+#computeBtn {
+  padding: 5px 16px;
+  background-color: #28a745;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  width: 95%;
+  height: 30px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 19px;
+  margin-left: 8px;
+}
+
+#computeBtn:hover {
+  background-color: #218838;
+}
+
+
+
+  </style>
+</head>
+<body>
+
+  <!-- Two‑Line Ultra Slim Navbar -->
+  <div class="navbar">
+    <div class="field">
+      <label for="month">মাস</label>
+      <input type="text" id="month" placeholder="মাস" onclick="showMonthYearPopup()">
+    </div>
+    <div class="field">
+      <label for="salesInput">সেল</label>
+      <input type="text" id="salesInput" placeholder="0" readonly>
+    </div>
+    <div class="field">
+      <label for="expenseInput">খরচ</label>
+      <input type="text" id="expenseInput" placeholder="0" readonly>
+    </div>
+    <div class="field">
+      <label for="profitInput">প্রফিট</label>
+      <input type="text" id="profitInput" placeholder="0" readonly>
+    </div>
+    <div class="field">
+      <label for="analysisInput">বিশ্লেষণ</label>
+      <input type="text" id="analysisInput" placeholder="লিখুন">
+    </div>
+    <button id="addButton" onclick="toggleDropdown()">Add</button>
+      <button id="saleMenuBtn">Menu</button>
+  </div>
+       <!-- Popup HTML -->
+<div id="monthYearPopup" class="popup">
+    <div class="popup-content">
+        <h2>মাস ও বছর নির্বাচন করুন</h2>
+        <label for="selectMonth">মাস:</label>
+        <select id="selectMonth">
+            <option value="January">জানুয়ারি</option>
+            <option value="February">ফেব্রুয়ারি</option>
+            <option value="March">মার্চ</option>
+            <option value="April">এপ্রিল</option>
+            <option value="May">মে</option>
+            <option value="June">জুন</option>
+            <option value="July">জুলাই</option>
+            <option value="August">আগস্ট</option>
+            <option value="September">সেপ্টেম্বর</option>
+            <option value="October">অক্টোবর</option>
+            <option value="November">নভেম্বর</option>
+            <option value="December">ডিসেম্বর</option>
+        </select>
+        
+        <label for="selectYear">বছর:</label>
+        <select id="selectYear">
+            <script>
+                let currentYear = new Date().getFullYear();
+                for (let i = currentYear; i >= 2000; i--) {
+                    document.write(`<option value="${i}">${i}</option>`);
+                }
+            </script>
+        </select>
+        
+        <button class="save-btn" onclick="selectMonthYear()">ওকে</button>
+        <button class="close-btn" onclick="closeMonthYearPopup()">বাতিল</button>
+    </div>
+</div>
+       <!-- dsr ড্রপডাউন মেনু -->
+<div id="srDropdown" class="dropdown">
+  <div id="srDsrList">
+  <h5>DSR তালিকা:</h5>
+  <ul id="dsrList"></ul>
+
+  <h5>SR তালিকা:</h5>
+  <ul id="srList"></ul>
+</div>
+
+  <div class="sr-input-group">
+    <input type="text" id="newSr" placeholder="নতুন SR">
+    <input type="number" id="newSrPercent" placeholder="%" class="percent-input" min="0" max="100">
+  </div>
+  <input type="text" id="newdSr" placeholder="নতুন dSR">
+  <button id="addSrButton" onclick="addnewSr()">Save</button>
+</div>
+
+ <!-- টেবিলের ডিভ -->
+<div id="tableContainer" style="margin: 20px:"></div>
+
+
+<div class="sidebar-sell-menu" id="sellMenu">
+  <button class="close-btn" id="closeSellMenu">&times;</button>
+  <h4>সেল মেনু</h4>
+
+  <!-- উপরের অংশ (৩৫%) -->
+  <div class="sell-menu-top">
+    <ul class="sell-menu-list" id="sellMenuList">
+      <!-- JavaScript দিয়ে li এখানে যোগ হবে -->
+    </ul>
+  </div>
+
+  <!-- নিচের অংশ (৬৫%) -->
+<!-- SR নির্বাচন ও রেজাল্ট সেকশন -->
+<div id="srDsrList">
+  <label for="srSelect">SR নির্বাচন করুন:</label>
+  <select id="srSelect">
+    <option value="">-- SR বাছাই করুন --</option>
+  </select>
+ <div id="srResultListD">
+  <ul id="srResultList"></ul>
+</div>
+  <div class="sr-summary-inputs">
+    <input type="number" id="totalSale" placeholder="মোট সেল" readonly />
+    <input type="number" id="totalDamage" placeholder="মোট ডেমেজ" readonly />
+  </div>
+
+  <button id="computeBtn">হিসাব করুন</button>
+</div>
+
+</div>
+
+<script type="module" src="firebase.js"></script>
+
+  <script type="module">
+            // Import Firebase modules
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-app.js";
+  import {
+    getFirestore,
+    collection,
+    addDoc,
+    setDoc,
+    getDocs,
+    getDoc,
+    deleteDoc,
+    doc,
+    arrayUnion,
+    updateDoc,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-firestore.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.2.0/firebase-auth.js";
+
+  // Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyACFf60qa7Udvz9Xn8GN6vu9V_BkQzdovk",
+    authDomain: "shakib-enterprise-6df83.firebaseapp.com",
+    projectId: "shakib-enterprise-6df83",
+    storageBucket: "shakib-enterprise-6df83.appspot.com",
+    messagingSenderId: "957943781117",
+    appId: "1:957943781117:web:af41a45c8a202fdb52d094"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  
+      // পপআপ দেখানোর ফাংশন
+window.showMonthYearPopup = function () {
+    document.getElementById("monthYearPopup").style.display = "block";
+};
+
+// পপআপ বন্ধ করার ফাংশন
+window.closeMonthYearPopup = function () {
+    document.getElementById("monthYearPopup").style.display = "none";
+};
+
+// মাস এবং বছর সিলেক্ট করে ওকে বাটনে চাপলে একশন
+window.selectMonthYear = async function () {
+    let month = document.getElementById("selectMonth")?.value;
+    let year = document.getElementById("selectYear")?.value;
+
+    if (!month || !year) {
+        alert("মাস এবং বছর সিলেক্ট করুন!");
+        return;
+    }
+
+    let docId = `${month}_${year}`; // Firestore ডকুমেন্ট আইডি
+
+    try {
+        const db = getFirestore();
+        const docRef = doc(db, "khoroch", docId);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+            console.log("ডাটা পাওয়া গেছে, দেখানো হচ্ছে...");
+            // **ডাটা লোড করুন**
+            let data = docSnap.data();
+            console.log("Firestore Data:", data);
+            document.getElementById("month").value = `${month}_${year}`;
+           await generateTable();
+           await fetchData();
+           await calculateTotals();
+                 closeMonthYearPopup();
+        } else {
+            console.log("ডাটা নেই, নতুন তৈরি করা হচ্ছে...");
+            await setDoc(docRef, {
+                month: month,
+                year: year,
+                sales: [],
+                srname: [],
+                dsrname: []
+                 }, { merge: true });
+            console.log("নতুন ডকুমেন্ট তৈরি করা হয়েছে!");
+                  // ✅ **নেভবারের ইনপুট ফিল্ডে মাস ও বছর সেট করুন**
+              document.getElementById("month").value = `${month}_${year}`;
+              generateTable();
+              closeMonthYearPopup(); // পপআপ বন্ধ করা
+            }
+    } catch (error) {
+        console.error("Firestore-এ সমস্যা:", error);
+        alert("ডাটা সংরক্ষণ করতে সমস্যা হয়েছে!");
+    }
+};
+
+// এস আর ড্রপডাউন মেনু দেখাবে এবং লুকাবে
+window.toggleDropdown = function () {
+    var dropdown = document.getElementById("srDropdown");
+    if (dropdown.style.display === "none" || dropdown.style.display === "") {
+        dropdown.style.display = "block"; // দেখাবে
+    } else {
+        dropdown.style.display = "none"; // লুকাবে
+    }
+}
+      // এড sr & dsr নাম 
+window.addnewSr = async function () {
+    const newSrInput = document.getElementById("newSr").value.trim();
+    const newSrPercent = parseFloat(document.getElementById("newSrPercent").value.trim());
+    const newdSrInput = document.getElementById("newdSr").value.trim();
+
+    if (!newSrInput && !newdSrInput) {
+        alert("কমপক্ষে একটি SR বা DSR ইনপুট ফিল্ড পূরণ করতে হবে!");
+        return;
+    }
+
+    try {
+        // SR ডকুমেন্ট হ্যান্ডলিং
+        if (newSrInput) {
+            if (isNaN(newSrPercent)) {
+                alert("SR এর সাথে একটি বৈধ পার্সেন্ট দিন!");
+                return;
+            }
+
+            const srDocRef = doc(db, "workerzone", "SrAll");
+            const srDocSnap = await getDoc(srDocRef);
+
+            const newSrObject = { name: newSrInput, percent: newSrPercent };
+
+            if (srDocSnap.exists()) {
+                await updateDoc(srDocRef, {
+                    srname: arrayUnion(newSrObject)
+                });
+            } else {
+                await setDoc(srDocRef, {
+                    srname: [newSrObject]
+                });
+            }
+        }
+
+        // DSR ডকুমেন্ট হ্যান্ডলিং
+        if (newdSrInput) {
+            const dsrDocRef = doc(db, "workerzone", "DsrAll");
+            const dsrDocSnap = await getDoc(dsrDocRef);
+
+            if (dsrDocSnap.exists()) {
+                await updateDoc(dsrDocRef, {
+                    dsrname: arrayUnion(newdSrInput)
+                });
+            } else {
+                await setDoc(dsrDocRef, {
+                    dsrname: [newdSrInput]
+                });
+            }
+        }
+
+        console.log("SR এবং/অথবা DSR সফলভাবে সংরক্ষণ হয়েছে।");
+
+        // ইনপুট ফিল্ড খালি করা
+        document.getElementById("newSr").value = "";
+        document.getElementById("newSrPercent").value = "";
+        document.getElementById("newdSr").value = "";
+
+        toggleDropdown();
+
+    } catch (error) {
+        console.error("SR/DSR সংরক্ষণের সময় সমস্যা হয়েছে:", error);
+    }
+};
+// DSR ও SR লিস্ট ফেচ করে দেখানোর ফাংশন
+async function fetchWorkerList() {
+  const dsrList = document.getElementById("dsrList");
+  const srList = document.getElementById("srList");
+
+  dsrList.innerHTML = "";
+  srList.innerHTML = "";
+
+  try {
+    // DSR ডেটা ফেচ করা
+    const dsrDocRef = doc(db, "workerzone", "DsrAll");
+    const dsrDocSnap = await getDoc(dsrDocRef);
+    const dsrData = dsrDocSnap.exists() ? dsrDocSnap.data().dsrname : [];
+
+    dsrData.forEach(name => {
+      const li = document.createElement("li");
+      li.textContent = name;
+      dsrList.appendChild(li);
+    });
+
+    // SR ডেটা ফেচ করা
+    const srDocRef = doc(db, "workerzone", "SrAll");
+    const srDocSnap = await getDoc(srDocRef);
+    const srData = srDocSnap.exists() ? srDocSnap.data().srname : [];
+
+    srData.forEach(entry => {
+      const li = document.createElement("li");
+      li.textContent = `${entry.name} (${entry.percent}%)`;
+      srList.appendChild(li);
+    });
+
+  } catch (error) {
+    console.error("DSR/SR ডেটা ফেচ করতে সমস্যা হয়েছে:", error);
+  }
+}
+
+// পেজ লোড হলে ফাংশনটি চালানো
+window.addEventListener("DOMContentLoaded", fetchWorkerList );
+
+
+
+
+// generateTable function: সম্পূর্ণ টেবিল তৈরি করে
+  window.generateTable = async function () {
+  const month = document.getElementById("month").value.trim();
+  if (!month) {
+    alert("মাস ইনপুট দিন!");
+    return;
+  }
+
+  // DOM থেকে DSR নাম সংগ্রহ
+  const dsrListItems = document.querySelectorAll("#dsrList li");
+  const dsrNames = Array.from(dsrListItems).map(li => li.textContent.trim());
+
+  // DOM থেকে SR নাম এবং পার্সেন্ট সংগ্রহ
+  const srListItems = document.querySelectorAll("#srList li");
+  const srNames = Array.from(srListItems).map(li => {
+    const match = li.textContent.trim().match(/^(.+?)\s*\((\d+)%\)$/);
+    return match ? { name: match[1], percent: parseInt(match[2]) } : { name: li.textContent.trim(), percent: 0 };
+  });
+
+  // টেবিল তৈরি
+  const table = document.createElement("table");
+  table.id = "salesTable";
+
+  const headers = [
+    "তাং", "বার",
+    ...dsrNames,
+    "মোট সেল", "মোট খরচ", "মোট লাভ", "বিশ্লেষণ", "ডেমেজ", "অ্যাকশন"
+  ];
+  const thead = table.createTHead();
+  const headerRow = thead.insertRow();
+  headers.forEach(text => {
+    const th = document.createElement("th");
+    th.innerText = text;
+    headerRow.appendChild(th);
+  });
+
+  const tbody = table.createTBody();
+  for (let day = 1; day <= 31; day++) {
+    const row = tbody.insertRow();
+
+    // ১. Date
+    row.insertCell().innerText = day;
+
+    // ২. Day dropdown
+    const dayCell = row.insertCell();
+    const select = document.createElement("select");
+    select.disabled = true;
+    ["শনিবার", "রবিবার", "সোমবার", "মঙ্গলবার", "বুধবার", "বৃহস্পতিবার", "শুক্রবার"]
+      .forEach(d => select.add(new Option(d, d)));
+    dayCell.appendChild(select);
+
+    // ৩. DSR সেল: ইনপুট + SR menu
+    dsrNames.forEach(() => {
+      const cell = row.insertCell();
+      cell.classList.add("dsr-cell");
+      const inp = document.createElement("input");
+      inp.type = "number";
+      inp.placeholder = "সেল";
+      inp.readOnly = true;
+      cell.appendChild(inp);
+
+      cell.addEventListener("dblclick", e => {
+        e.stopPropagation();
+        showSrMenu(cell, srNames); // srNames is now [{name, percent}]
+      });
+    });
+
+    // ৪. অন্যান্য ফিল্ড
+    ["মোট সেল", "মোট খরচ", "মোট লাভ", "বিশ্লেষণ", "ডেমেজ"].forEach(label => {
+      const cell = row.insertCell();
+      if (label === "মোট খরচ") {
+        const inp = document.createElement("input");
+        inp.type = "text";
+        inp.placeholder = label;
+        inp.readOnly = true;
+        inp.classList.add("expense-input");
+        cell.appendChild(inp);
+
+        const ta = document.createElement("textarea");
+        ta.placeholder = "টেক্সট ";
+        ta.classList.add("expense-textarea");
+        ta.style.display = "none";
+        cell.appendChild(ta);
+
+        inp.addEventListener("dblclick", () => {
+          ta.style.display = ta.style.display === "none" ? "block" : "none";
+        });
+      } else {
+        const inp = document.createElement("input");
+        inp.type = label === "বিশ্লেষণ" ? "text" : "number";
+        inp.placeholder = label;
+        inp.readOnly = true;
+        cell.appendChild(inp);
+      }
+    });
+
+    // ৫. Action buttons
+    const actionCell = row.insertCell();
+    actionCell.classList.add("action-cell");
+    actionCell.innerHTML = `
+      <button class="edit-btn">✏️</button>
+      <button class="save-btn" disabled>💾</button>
+    `;
+    setupRowButtons(row);
+  }
+
+  // টেবিল দেখানো
+  const container = document.getElementById("tableContainer");
+  container.innerHTML = "";
+  container.appendChild(table);
+};
+
+// এসআর  মেনু ক্রিয়েট করে 
+function showSrMenu(cell) {
+  let menu = cell._srMenu;
+
+  if (!menu) {
+    // SR নাম লোড করুন srList থেকে
+    const srListItems = document.querySelectorAll("#srList li");
+    const srNames = Array.from(srListItems).map(li => {
+      const nameWithPercent = li.textContent;
+      const name = nameWithPercent.split(" (")[0]; // "Rahim (10%)" -> "Rahim"
+      return name;
+    });
+
+    // Create container div
+    menu = document.createElement('div');
+    menu.className = 'sr-menu';
+    menu.style.marginTop = '4px';
+
+    // SR select dropdown (multiple selection)
+    const srSelect = document.createElement('select');
+    srSelect.multiple = true;
+
+    // Placeholder option
+    const placeholder = document.createElement('option');
+    placeholder.textContent = 'SR বাছাই করুন';
+    placeholder.disabled = true;
+    srSelect.appendChild(placeholder);
+
+    // Populate options from srNames
+    srNames.forEach(name => {
+      const opt = document.createElement('option');
+      opt.value = name;
+      opt.textContent = name;
+      srSelect.appendChild(opt);
+    });
+    menu.appendChild(srSelect);
+
+    // Container for input wrappers
+    const inputsContainer = document.createElement('div');
+    inputsContainer.className = 'sr-inputs';
+    menu.appendChild(inputsContainer);
+
+    // On change: create sale and damage inputs per selected SR
+    srSelect.addEventListener('change', () => {
+      // Clear unselected wrappers
+      Array.from(inputsContainer.children).forEach(wrapper => {
+        const label = wrapper.querySelector('label').textContent;
+        if (![...srSelect.selectedOptions].some(o => o.value === label)) {
+          inputsContainer.removeChild(wrapper);
+        }
+      });
+
+      // For each selected option, ensure wrapper exists
+      Array.from(srSelect.selectedOptions).forEach(opt => {
+        if (opt.disabled) return;
+        const srName = opt.value;
+        let wrapper = Array.from(inputsContainer.children)
+          .find(w => w.querySelector('label').textContent === srName);
+        if (!wrapper) {
+          wrapper = document.createElement('div');
+          wrapper.className = 'sr-input-wrapper';
+          wrapper.innerHTML = `
+            <label>${srName}</label>
+            <input type="number" placeholder="${srName} সেল" class="sr-sale-input">
+            <input type="number" placeholder="${srName} ডেমেজ" class="sr-damage-input">
+          `;
+          inputsContainer.appendChild(wrapper);
+        }
+      });
+    });
+
+    // Buttons container
+    const btnContainer = document.createElement('div');
+    btnContainer.className = 'sr-menu-buttons';
+    btnContainer.innerHTML = `
+      <button class="sr-apply">Apply</button>
+      <button class="sr-close">Close</button>
+    `;
+    menu.appendChild(btnContainer);
+
+    // Hide menu on click
+    const hideMenu = () => {
+      menu.style.display = 'none';
+    };
+    btnContainer.querySelector('.sr-apply').onclick = hideMenu;
+    btnContainer.querySelector('.sr-close').onclick = hideMenu;
+
+    // Append to cell and store reference
+    cell.appendChild(menu);
+    cell._srMenu = menu;
+  }
+
+  // Show menu
+  menu.style.display = 'block';
+}
+
+
+
+
+
+
+
+
+
+    // Row এর Edit & Save বাটনের জন্য হেল্পার ফাংশন
+   function setupRowButtons(row) {
+      const edit = row.querySelector(".edit-btn");
+      const save = row.querySelector(".save-btn");
+      const select = row.querySelector("select");
+
+      edit.onclick = () => {
+        row.querySelectorAll("input, textarea").forEach(i => {
+          i.readOnly = false;
+        });
+        select.disabled = false;
+        edit.disabled = true;
+        save.disabled = false;
+        row.style.background = "#a9dfbf"; // এডিটিংয়ের সময় লাইট গ্রিন ব্যাকগ্রাউন্ড
+      };
+
+      save.onclick = () => {
+        row.querySelectorAll("input, textarea").forEach(i => {
+          i.readOnly = true;
+        });
+        select.disabled = true;
+        edit.disabled = false;
+        save.disabled = true;
+        row.style.background = "";
+        // এখানে প্রয়োজনে saveData(row) ফাংশন কল করতে পারেন
+       saveData(row);
+       calculateTotals();
+      };
+    }
+   
+// সেভ টেবিল ডাটা
+async function saveData(row) {
+  const month = document.getElementById("month").value.trim();
+  if (!month) {
+    alert("মাস ইনপুট ফিল্ড খালি রাখা যাবে না!");
+    return;
+  }
+
+  const docRef = doc(db, "khoroch", month);
+
+  try {
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) {
+      alert("এই মাসের জন্য রিপোর্ট পাওয়া যায়নি!");
+      return;
+    }
+
+    const data = docSnap.data();
+    const sales = data.sales || [];
+
+    // টেবিলের হেডার থেকে DSR নাম সংগ্রহ
+    const headerCells = document.querySelectorAll("thead th");
+    const dsrNamesFromHeader = Array.from(headerCells)
+      .slice(2, -3) // প্রথম ২টি (Date, Day) এবং শেষ ৩টি (Total Sale, Cost, Damage) বাদ
+      .map(th => th.textContent.trim());
+
+    const day = row.querySelector("td").textContent.trim();
+    const daySelect = row.querySelector("select");
+    const selectedDay = daySelect ? daySelect.value : "";
+
+    const dsrData = {};
+    const cells = row.querySelectorAll(".dsr-cell");
+
+    cells.forEach((cell, index) => {
+      const dsrName = dsrNamesFromHeader[index] || `DSR_${index + 1}`;
+
+      // DSR-এর মূল সেল ইনপুট
+      const saleInput = cell.querySelector("input");
+      const dsrSale = saleInput?.value.trim() || "0";
+
+      // SR menu থেকে sale এবং damage ইনপুট
+      const srMenuData = {};
+      const srWrappers = cell.querySelectorAll(".sr-input-wrapper");
+
+      srWrappers.forEach(wrapper => {
+        const srName = wrapper.querySelector("label").textContent.trim();
+        const srSaleInput = wrapper.querySelector(".sr-sale-input");
+        const srDamageInput = wrapper.querySelector(".sr-damage-input");
+        const srSale  = srSaleInput?.value.trim()  || "0";
+        const srDamage = srDamageInput?.value.trim() || "0";
+        if (srName) {
+          srMenuData[srName] = {
+            sale: srSale,
+            damage: srDamage
+          };
+        }
+      });
+
+      dsrData[dsrName] = {
+        sale: dsrSale,
+        srMenuData
+      };
+    });
+
+    // মোট খরচ ইনপুট ও টেক্সট এরিয়া
+    const costCell = row.querySelector("td:nth-last-child(5)");
+    const costInput = costCell.querySelector("input");
+    const costTextarea = costCell.querySelector("textarea");
+    const totalCost = parseFloat(costInput?.value || 0);
+    const costDetails = costTextarea?.value.trim() || "";
+
+    // ডেমেজ ইনপুট (main damage)
+    const damejInput = row.querySelector("td:nth-last-child(2) input");
+    const totalDamej = parseFloat(damejInput?.value || 0);
+
+    // বিদ্যমান ডেটা আপডেট বা নতুন পুশ
+    let existingData = sales.find(item => item.date === day);
+    if (existingData) {
+      existingData.day     = selectedDay;
+      existingData.cost    = totalCost;
+      existingData.damej   = totalDamej;
+      existingData.detail  = costDetails;
+      existingData.dsrData = { ...existingData.dsrData, ...dsrData };
+    } else {
+      sales.push({
+        date:   day,
+        day:    selectedDay,
+        cost:   totalCost,
+        damej:  totalDamej,
+        detail: costDetails,
+        dsrData
+      });
+    }
+
+    await setDoc(docRef, { sales }, { merge: true });
+    alert("ডাটা সফলভাবে সেভ হয়েছে!");
+  } catch (error) {
+    console.error("ডাটা সেভ করতে ব্যর্থ:", error);
+    alert("ডাটা সেভ করতে সমস্যা হয়েছে!");
+  }
+}
+
+
+
+
+// ফেচ টেবিল ডাটা
+window.fetchData = async function () {
+  const month = document.getElementById("month").value.trim();
+  if (!month) {
+    alert("মাস ইনপুট দিন!");
+    return;
+  }
+
+  const table = document.getElementById("salesTable");
+  if (!table) {
+    alert("টেবিল আগে জেনারেট করুন!");
+    return;
+  }
+
+  const docRef = doc(db, "khoroch", month);
+
+  try {
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) {
+      alert("এই মাসের জন্য কোনো রিপোর্ট পাওয়া যায়নি!");
+      return;
+    }
+
+    const data = docSnap.data();
+    const sales = data.sales || [];
+    const tbody = table.querySelector("tbody");
+    const headerCells = table.querySelectorAll("thead th");
+
+    sales.forEach(sale => {
+      const rowIndex = parseInt(sale.date) - 1;
+      const row = tbody?.rows[rowIndex];
+      if (!row) return;
+
+      // বার (Day) সিলেক্ট
+      const daySelect = row.querySelector("select");
+      if (daySelect) daySelect.value = sale.day || "";
+
+      // DSR সেলগুলো সেট
+      const dsrCells = row.querySelectorAll(".dsr-cell");
+      dsrCells.forEach(cell => {
+        const cellIndex = cell.cellIndex;
+        const dsrName = headerCells[cellIndex]?.textContent?.trim();
+        const dsrEntry = sale.dsrData?.[dsrName];
+        if (!dsrEntry) return;
+
+        // মূল সেল ইনপুট
+        const saleInput = cell.querySelector("input");
+        if (saleInput) saleInput.value = dsrEntry.sale || "";
+
+        // SR menu ডেটা বসানো
+        if (dsrEntry.srMenuData) {
+          showSrMenuWithInputs(cell, dsrEntry.srMenuData);
+
+          const srWrappers = cell.querySelectorAll(".sr-input-wrapper");
+          srWrappers.forEach(wrapper => {
+            const srName = wrapper.querySelector("label")?.textContent?.trim();
+            const srSaleInput = wrapper.querySelector(".sr-sale-input");
+            const srDamageInput = wrapper.querySelector(".sr-damage-input");
+            const srData = dsrEntry.srMenuData?.[srName] || {};
+
+            if (srSaleInput) srSaleInput.value = srData.sale || "";
+            if (srDamageInput) srDamageInput.value = srData.damage || "";
+          });
+
+          const srMenu = cell.querySelector(".sr-menu");
+          if (srMenu) srMenu.style.display = "none";
+        }
+      });
+
+      // মোট খরচ (Cost)
+      const costCell = row.querySelector("td:nth-last-child(5)");
+      if (costCell) {
+        const costInput = costCell.querySelector("input");
+        const costTextarea = costCell.querySelector("textarea");
+        if (costInput) costInput.value = sale.cost || "";
+        if (costTextarea) costTextarea.value = sale.detail || "";
+      }
+
+      // ডেমেজ ইনপুট
+      const damejInput = row.querySelector("td:nth-last-child(2) input");
+      if (damejInput) damejInput.value = sale.damej || "";
+    });
+
+    alert("ডেটা লোড হয়েছে!");
+  } catch (error) {
+    console.error("ডেটা ফেচ করতে সমস্যা:", error);
+    alert("ডেটা লোড করতে সমস্যা হয়েছে!");
+  }
+};
+
+
+// SR Menu: সেল + ডেমেজ ইনপুট সহ
+function showSrMenuWithInputs(cell, srMenuData) {
+  let menu = cell._srMenu;
+  const srNames = Object.keys(srMenuData || {});
+  if (!srNames.length) return;
+
+  // আগের মেনু থাকলে ক্লিয়ার করে নতুনভাবে বসাই
+  if (menu) {
+    menu.remove();
+    cell._srMenu = null;
+  }
+
+  // মেনু তৈরির শুরু
+  menu = document.createElement("div");
+  menu.className = "sr-menu";
+  menu.style.marginTop = "4px";
+
+  // SR select dropdown (disabled preview only)
+  const srSelect = document.createElement("select");
+  srSelect.multiple = true;
+  srSelect.disabled = true;
+
+  const placeholder = document.createElement("option");
+  placeholder.textContent = "SR তালিকা";
+  placeholder.disabled = true;
+  srSelect.appendChild(placeholder);
+
+  srNames.forEach(name => {
+    const option = document.createElement("option");
+    option.value = name;
+    option.textContent = name;
+    option.selected = true;
+    srSelect.appendChild(option);
+  });
+  menu.appendChild(srSelect);
+
+  // ইনপুট কন্টেইনার
+  const inputsContainer = document.createElement("div");
+  inputsContainer.className = "sr-inputs";
+
+  srNames.forEach(name => {
+    const data = srMenuData[name] || {};
+    const wrapper = document.createElement("div");
+    wrapper.className = "sr-input-wrapper";
+    wrapper.innerHTML = `
+      <label>${name}</label>
+      <input type="number" class="sr-sale-input" placeholder="${name} সেল" value="${data.sale || ''}">
+      <input type="number" class="sr-damage-input" placeholder="${name} ডেমেজ" value="${data.damage || ''}">
+    `;
+    inputsContainer.appendChild(wrapper);
+  });
+
+  menu.appendChild(inputsContainer);
+
+  // Apply ও Close বাটন
+  const btnContainer = document.createElement("div");
+  btnContainer.className = "sr-menu-buttons";
+  btnContainer.innerHTML = `
+    <button class="sr-apply">Apply</button>
+    <button class="sr-close">Close</button>
+  `;
+  menu.appendChild(btnContainer);
+
+  // Event listeners
+  const hideMenu = () => { menu.style.display = "none"; };
+  btnContainer.querySelector(".sr-apply").onclick = hideMenu;
+  btnContainer.querySelector(".sr-close").onclick = hideMenu;
+
+  // মেনু যোগ করো
+  cell.appendChild(menu);
+  cell._srMenu = menu;
+}
+
+
+
+
+
+
+
+window.calculateTotals = function () {
+  let aggregateSales = 0;
+  let aggregateExpense = 0;
+  let aggregateProfit = 0;
+
+  // DSR ও SR অ্যাগ্রিগেট অবজেক্ট
+  const dsrAggregates = {};  // { DSR_Name: { sale, damage } }
+  const srAggregates  = {};  // { SR_Name: { sale, damage } }
+
+  const table = document.querySelector("#tableContainer table");
+  if (!table) return;
+
+  // হেডার থেকে DSR নামগুলো তুলে নাও
+  const headerThs = Array.from(table.querySelectorAll("thead th")).slice(2, -6);
+  const dsrNames = headerThs.map(th => th.textContent.trim());
+
+  // SR পার্সেন্ট ম্যাপ তৈরি করো #srList থেকে
+  const srPercentMap = {};
+  document.querySelectorAll("#srList li").forEach(li => {
+    const text = li.textContent.trim();
+    const match = text.match(/^(.+?)\s*\((\d+)%\)$/);
+    if (match) {
+      const name = match[1].trim();
+      const pct  = parseFloat(match[2]);
+      srPercentMap[name] = pct;
+    }
+  });
+
+  // প্রতিটি রো নিয়ে কাজ
+  const rows = Array.from(table.querySelectorAll("tbody tr"));
+  rows.forEach(row => {
+    let rowTotalSale   = 0;
+    let rowTotalDamage = 0;
+    let rowTotalProfit = 0;
+
+    // প্রতিটি DSR সেলে লুপ
+    row.querySelectorAll(".dsr-cell").forEach((cell, idx) => {
+      const dsrName = dsrNames[idx] || `DSR_${idx+1}`;
+      if (!dsrAggregates[dsrName]) dsrAggregates[dsrName] = { sale: 0, damage: 0 };
+
+      // DSR sale ইনপুট
+      const saleVal = parseFloat(cell.querySelector("input").value) || 0;
+      rowTotalSale += saleVal;
+      dsrAggregates[dsrName].sale += saleVal;
+
+      // প্রতিটি SR wrapper থেকে sale+damage+profit
+      cell.querySelectorAll(".sr-input-wrapper").forEach(wrapper => {
+        const srName      = wrapper.querySelector("label").textContent.trim();
+        const srSaleVal   = parseFloat(wrapper.querySelector(".sr-sale-input").value)  || 0;
+        const srDamageVal = parseFloat(wrapper.querySelector(".sr-damage-input").value) || 0;
+
+        // damage যোগ
+        rowTotalDamage += srDamageVal;
+        dsrAggregates[dsrName].damage += srDamageVal;
+
+        // SR aggregates
+        if (!srAggregates[srName]) srAggregates[srName] = { sale: 0, damage: 0 };
+        srAggregates[srName].sale   += srSaleVal;
+        srAggregates[srName].damage += srDamageVal;
+
+        // profit = srSaleVal * srPercentMap[srName] / 100
+        const pct = srPercentMap[srName] || 0;
+        rowTotalProfit += (srSaleVal * pct) / 100;
+      });
+    });
+
+    // মোট সেল ইনপুট (nth-last-child(6))
+    const totalSaleInput = row.querySelector("td:nth-last-child(6) input");
+    if (totalSaleInput) totalSaleInput.value = rowTotalSale.toFixed(2);
+
+    // মোট লাভ ইনপুট (nth-last-child(4))
+    const profitInput = row.querySelector("td:nth-last-child(4) input");
+    if (profitInput) profitInput.value = rowTotalProfit.toFixed(2);
+
+    // মোট খরচ ইনপুট (nth-last-child(5))
+    const expenseInput = row.querySelector("td:nth-last-child(5) input");
+    const expenseVal   = parseFloat(expenseInput?.value) || 0;
+
+    // বিশ্লেষণ (nth-last-child(3))
+    const analysisInput = row.querySelector("td:nth-last-child(3) input");
+    if (analysisInput) {
+      if (expenseVal > rowTotalProfit) {
+        analysisInput.value = `L -${(expenseVal - rowTotalProfit).toFixed(2)}`;
+        analysisInput.style.color = "red";
+      } else if (rowTotalProfit > expenseVal) {
+        analysisInput.value = `P +${(rowTotalProfit - expenseVal).toFixed(2)}`;
+        analysisInput.style.color = "green";
+      } else {
+        analysisInput.value = "0.00";
+        analysisInput.style.color = "black";
+      }
+    }
+
+    // মোট ডেমেজ ইনপুট (nth-last-child(2))
+    const damageInput = row.querySelector("td:nth-last-child(2) input");
+    if (damageInput) damageInput.value = rowTotalDamage.toFixed(2);
+
+    // সার্বিক মোট আপডেট
+    aggregateSales   += rowTotalSale;
+    aggregateProfit  += rowTotalProfit;
+    aggregateExpense += expenseVal;
+  });
+
+  // নেভবার ইনপুট আপডেট
+  document.getElementById("salesInput").value  = aggregateSales.toFixed(2);
+  document.getElementById("expenseInput").value = aggregateExpense.toFixed(2);
+  document.getElementById("profitInput").value  = aggregateProfit.toFixed(2);
+
+  // সাইডবার লিস্ট আপডেট
+  const sellMenuList = document.getElementById("sellMenuList");
+  if (sellMenuList) {
+    sellMenuList.innerHTML = "";
+    dsrNames.forEach(name => {
+      const { sale=0, damage=0 } = dsrAggregates[name] || {};
+      const li = document.createElement("li");
+      li.className = "dsr-item";
+      li.textContent = `${name}: সেল ${sale.toFixed(2)}, ডেমেজ ${damage.toFixed(2)}`;
+      sellMenuList.appendChild(li);
+    });
+    Object.entries(srAggregates).forEach(([sr, val]) => {
+      const li = document.createElement("li");
+      li.className = "sr-item";
+      li.textContent = `${sr}: সেল ${val.sale.toFixed(2)}, ডেমেজ ${val.damage.toFixed(2)}`;
+      sellMenuList.appendChild(li);
+    });
+  }
+  calculateAnalysis();
+};
+
+
+
+
+
+const menuBtn = document.getElementById("saleMenuBtn");
+  const sellMenu = document.getElementById("sellMenu");
+  const closeBtn = document.getElementById("closeSellMenu");
+
+  menuBtn.addEventListener("click", () => {
+    sellMenu.classList.toggle("active");
+  });
+
+  closeBtn.addEventListener("click", () => {
+    sellMenu.classList.remove("active");
+  });
+
+
+
+// DOM Ready
+window.addEventListener('DOMContentLoaded', () => {
+  const srSelect = document.getElementById('srSelect');
+
+  const onFirstOpen = () => {
+    populateSrSelect();
+    srSelect.removeEventListener('mousedown', onFirstOpen);
+    srSelect.removeEventListener('focus',     onFirstOpen);
+  };
+
+  srSelect.addEventListener('mousedown', onFirstOpen);
+  srSelect.addEventListener('focus',     onFirstOpen);
+
+  srSelect.addEventListener('change', populateResultList);
+
+  document.getElementById('computeBtn')
+          .addEventListener('click', computeSum);
+});
+
+// SR লিস্ট থেকে সিলেক্ট অপশন ভরাট
+function populateSrSelect() {
+  const sel = document.getElementById("srSelect");
+  sel.innerHTML = '<option value="">-- SR বাছাই করুন --</option>';
+
+  document.querySelectorAll("#srList li").forEach(li => {
+    const txt  = li.textContent.trim();
+    const name = txt.split(" (")[0];
+    const opt  = document.createElement("option");
+    opt.value = name;
+    opt.textContent = name;
+    sel.appendChild(opt);
+  });
+}
+
+// সিলেক্ট হওয়া SR এর ডেট অনুযায়ী ডেটা দেখানো
+function populateResultList() {
+  const sr = document.getElementById("srSelect").value;
+  const out = document.getElementById("srResultList");
+  out.innerHTML = "";
+  if (!sr) return;
+
+  const table = document.getElementById("salesTable");
+  if (!table) return;
+
+  table.querySelectorAll("tbody tr").forEach((row,i) => {
+    row.querySelectorAll(".sr-input-wrapper").forEach(w => {
+      const name = w.querySelector("label").textContent.trim();
+      if (name === sr) {
+        const sale   = parseFloat(w.querySelector(".sr-sale-input").value)   || 0;
+        const damage = parseFloat(w.querySelector(".sr-damage-input").value) || 0;
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <input type="checkbox" data-sale="${sale}" data-damage="${damage}">
+          তাং ${i+1}: সেল ${sale}, ডেমেজ ${damage}
+        `;
+        out.appendChild(li);
+      }
+    });
+  });
+}
+
+// চেক করা ডেটার হিসাব দেখানো
+function computeSum() {
+  let ts = 0, td = 0;
+  document.querySelectorAll("#srResultList input[type=checkbox]:checked")
+          .forEach(cb => {
+    ts += parseFloat(cb.dataset.sale)   || 0;
+    td += parseFloat(cb.dataset.damage) || 0;
+  });
+  document.getElementById("totalSale").value   = ts;
+  document.getElementById("totalDamage").value = td;
+}
+
+window.calculateAnalysis = function () {
+  const expenseInput = document.getElementById("expenseInput");
+  const profitInput = document.getElementById("profitInput");
+  const analysisInput = document.getElementById("analysisInput");
+
+  const expense = parseFloat(expenseInput.value) || 0;
+  const profit = parseFloat(profitInput.value) || 0;
+
+  let resultText = "";
+  let resultColor = "";
+
+  if (expense > profit) {
+    const loss = expense - profit;
+    resultText = `L - ${loss}`;
+    resultColor = "red";
+  } else if (profit > expense) {
+    const gain = profit - expense;
+    resultText = `P + ${gain}`;
+    resultColor = "green";
+  } else {
+    resultText = "সমান";
+    resultColor = "black";
+  }
+
+  analysisInput.value = resultText;
+  analysisInput.style.color = resultColor;
+}
+
+
+
+          // Fetch product list on page load
+  const auth = getAuth();
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      console.log("User is logged in:", user.uid);
+      fetchProductList();
+    } else {
+      console.error("User not logged in. Redirecting to login page.");
+      window.location.href = "login.html"; // Redirect to login page
+    }
+  });
+  </script>
+
+</body>
+</html>

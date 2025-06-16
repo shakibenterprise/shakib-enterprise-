@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>সাকিব এন্টারপ্রাইজ</title>
+  <link rel="stylesheet" href="Home.css">
+</head>
+<body>
+  <div class="navbar">
+    <h1>সাকিব এন্টারপ্রাইজ</h1>
+    <button id="logout-button">লগআউট</button>
+  </div>
+  <div class="content">
+    <button id="stok-button">স্টোক</button>
+    <button id="hisab-button">হিসাব</button>
+    <button id="history-button">হিস্টোরি</button>
+    <button id="baki-button">বাকি</button>
+    <button id="monthly-report">মাসিক হিসাব</button>
+    <button id="balance-button">মাসিক আয় ব্যায়</button>
+    <button id="draft-button">ড্রাফ্ট</button>
+    
+  </div>
+
+<script type="module">
+
+ document.getElementById("stok-button").addEventListener("click", function () {
+    window.location.href = "Fullstok.html"; // স্টোক পেজ
+});
+
+document.getElementById("hisab-button").addEventListener("click", function () {
+    window.location.href = "hisab.html"; // হিসাব পেজ
+});
+
+document.getElementById("history-button").addEventListener("click", function () {
+    window.location.href = "history.html"; // হিস্টোরি পেজ
+});
+
+document.getElementById("baki-button").addEventListener("click", function () {
+    window.location.href = "baki.html"; // বাকি পেজ
+});
+
+document.getElementById("monthly-report").addEventListener("click", function () {
+    window.location.href = "Report.html"; // মাসিক হিসাব পেজ
+});
+
+document.getElementById("balance-button").addEventListener("click", function () {
+    window.location.href = "Balance.html"; // মাসিক হিসাব পেজ
+});
+
+</script>
+</body>
+</html>

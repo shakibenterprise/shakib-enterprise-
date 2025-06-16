@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>বাকির হিসাব</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+    /* হেডার */
+    header {
+      width: 100%;
+      height: 50px;
+      background: #007bff;
+      display: flex;
+      align-items: center;
+      padding: 0 15px;
+      color: white;
+      font-size: 18px;
+      justify-content: space-between;
+    }
+    .header-btn {
+      background: white;
+      color: #007bff;
+      padding: 5px 10px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    /* হেডার - সকল কাস্টমারের অবশিষ্ট বাকি দেখানোর জন্য */
+    #headerTotalDue {
+      font-weight: bold;
+    }
+    /* সাইডবার */
+    .sidebar {
+      position: fixed;
+      left: -250px;
+      top: 0;
+      width: 250px;
+      height: 100vh;
+      background: #333;
+      color: white;
+      transition: 0.3s;
+      padding-top: 50px;
+    }
+    .sidebar.show {
+      left: 0;
+    }
+    .sidebar-header {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      background: #444;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+    .sidebar ul li {
+      padding: 10px;
+      cursor: pointer;
+      border-bottom: 1px solid gray;
+      text-align: center;
+      background: #222;
+      margin: 5px;
+      border-radius: 5px;
+    }
+    .sidebar ul li:hover {
+      background: #555;
+    }
+    /* কন্টেন্ট */
+    .content {
+      margin-top: 60px;
+      padding: 20px;
+      width: 100%;
+      max-width: 600px;
+    }
+    /* কাস্টমার প্রোফাইল স্টাইল */
+    .customer-profile {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .customer-summary {
+      display: flex;
+      justify-content: space-between;
+      background: #f8f8f8;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+    .summary-item {
+      flex: 1;
+      text-align: center;
+      font-size: 1.2em;
+    }
+    /* ট্রানজেকশন লিস্ট স্টাইল */
+    .transaction-list {
+      list-style: none;
+      padding: 0;
+    }
+    .transaction-list li {
+      background: #fff;
+      padding: 12px 15px;
+      margin: 8px 0;
+      border-left: 5px solid;
+      border-radius: 5px;
+      transition: background 0.3s;
+      cursor: pointer;
+    }
+    .transaction-list li:hover {
+      background: #f0f0f0;
+    }
+    .transaction-list li.due {
+      border-left-color: red;
+    }
+    .transaction-list li.deposit {
+      border-left-color: green;
+    }
+    /* ট্রানজেকশন ফর্ম স্টাইল */
+    .transaction-form {
+      display: none;
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 8px;
+      margin-top: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .transaction-form input {
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .transaction-buttons button {
+      width: 48%;
+      padding: 10px;
+      margin: 5px 1%;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .due-btn {
+      background: red;
+      color: white;
+    }
+    .deposit-btn {
+      background: green;
+      color: white;
+    }
+    /* ট্রানজেকশন যোগ করার বাটন */
+    #showTransactionForm {
+      width: 100%;
+      background: #28a745;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    #showTransactionForm:hover {
+      background: #218838;
+    }
+    /* কাস্টমার ফর্ম স্টাইল */
+    .customer-form {
+      display: none;
+      background: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      margin-top: 15px;
+    }
+    .customer-form input {
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+    }
+    .customer-form button {
+      background: #007bff;
+      color: white;
+      padding: 8px 12px;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <!-- হেডার -->
+  <header>
+    <button class="header-btn" id="toggleSidebar">☰</button>
+    <button class="header-btn" id="addCustomerBtn">+ কাস্টমার যোগ</button>
+    <span id="headerTotalDue">মোট বাকি: 0 টাকা</span>
+  </header>
+
+  <!-- সাইডবার -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <span>কাস্টমার লিস্ট</span>
+      <button class="header-btn" id="closeSidebar">X</button>
+    </div>
+    <ul id="customerList"></ul>
+  </div>
+
+  <!-- মেইন কন্টেন্ট -->
+  <div class="content" id="content">
+    <!-- কাস্টমার ফর্ম -->
+    <div class="customer-form" id="customerForm">
+      <h3>নতুন কাস্টমার যোগ করুন</h3>
+      <input type="text" id="customerNameInput" placeholder="নাম" />
+      <input type="text" id="customerAddressInput" placeholder="ঠিকানা" />
+      <input type="text" id="customerNumberInput" placeholder="নাম্বার" />
+      <input type="text" id="customerIdentityInput" placeholder="পরিচয়" />
+      <button id="saveCustomer">সংরক্ষণ করুন</button>
+    </div>
+
+    <!-- কাস্টমার প্রোফাইল -->
+    <div id="customerProfile" class="customer-profile">
+      <h2 id="customerName">কাস্টমার নাম</h2>
+      <p id="customerInfo">ঠিকানা ও অন্যান্য তথ্য</p>
+
+      <div class="customer-summary">
+        <!-- এখানে 'মোট বাকি' শুধুমাত্র ডিউ ট্রানজেকশনগুলোর যোগফল দেখাবে -->
+        <div class="summary-item">
+          <strong>মোট বাকি</strong><br /><span id="totalDue">0</span> টাকা
+        </div>
+        <div class="summary-item">
+          <strong>মোট জমা</strong><br /><span id="totalDeposit">0</span> টাকা
+        </div>
+        <div class="summary-item">
+          <strong>অবশিষ্ট বাকি</strong><br /><span id="remainingDue">0</span> টাকা
+        </div>
+      </div>
+
+      <h3>বাকি ও জমার হিসাব</h3>
+      <ul id="transactions" class="transaction-list"></ul>
+
+      <button id="showTransactionForm">+ ট্রানজেকশন যোগ করুন</button>
+      <div class="transaction-form" id="transactionForm">
+        <input type="number" id="amount" placeholder="পরিমাণ" />
+        <input type="date" id="date" />
+        <input type="text" id="reason" placeholder="কারণ" />
+        <div class="transaction-buttons">
+          <button id="dueTransaction" class="due-btn">ডিউ</button>
+          <button id="depositTransaction" class="deposit-btn">ডিপোজিট</button>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="firebase.js"></script>
+    <!-- Main script: Import Firebase setup & functions -->
+    <script type="module">
+      import { fetchData, saveData } from "./firebase.js";
+
+      // customers variable will be maintained via Firestore onSnapshot
+      let customers = [];
+
+      // Firestore থেকে সকল কাস্টমার (Baki collection) রিয়েল-টাইমে ফেচ করুন
+      fetchData("Baki", null, (data) => {
+        customers = data;
+        updateCustomerList();
+      });
+
+      // DOM elements
+      const sidebar = document.getElementById("sidebar");
+      const toggleSidebarBtn = document.getElementById("toggleSidebar");
+      const closeSidebarBtn = document.getElementById("closeSidebar");
+      const addCustomerBtn = document.getElementById("addCustomerBtn");
+      const customerForm = document.getElementById("customerForm");
+      const saveCustomerBtn = document.getElementById("saveCustomer");
+      const customerList = document.getElementById("customerList");
+      const headerTotalDue = document.getElementById("headerTotalDue");
+      const customerProfile = document.getElementById("customerProfile");
+      const showTransactionFormBtn = document.getElementById("showTransactionForm");
+      const transactionForm = document.getElementById("transactionForm");
+      const transactionsList = document.getElementById("transactions");
+
+      // সাইডবার টগল
+      toggleSidebarBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("show");
+      });
+      closeSidebarBtn.addEventListener("click", () => {
+        sidebar.classList.remove("show");
+      });
+
+      // কাস্টমার ফর্ম দেখানো
+      addCustomerBtn.addEventListener("click", () => {
+        customerForm.style.display = customerForm.style.display === "block" ? "none" : "block";
+      });
+
+      // নতুন কাস্টমার সংরক্ষণ (Firestore-এ sync হবে)
+      saveCustomerBtn.addEventListener("click", () => {
+        let name = document.getElementById("customerNameInput").value.trim();
+        let address = document.getElementById("customerAddressInput").value.trim();
+        let number = document.getElementById("customerNumberInput").value.trim();
+        let identity = document.getElementById("customerIdentityInput").value.trim();
+
+        if (name && address && number && identity) {
+          const customer = {
+            name,
+            address,
+            number,
+            identity,
+            transactions: []
+          };
+          // customer.name ব্যবহার করে as docId (অনন্য হলে)
+          saveData("Baki", name, customer);
+          customerForm.style.display = "none";
+        }
+      });
+
+      // কাস্টমারের তালিকা আপডেট
+      function updateCustomerList() {
+        customerList.innerHTML = "";
+        customers.forEach((customer, index) => {
+          const li = document.createElement("li");
+          li.textContent = customer.name;
+          li.addEventListener("click", () => {
+            showCustomerProfile(index);
+          });
+          customerList.appendChild(li);
+        });
+        updateHeaderTotal();
+      }
+
+      // হেডারের জন্য সকল কাস্টমারের অবশিষ্ট বাকি (প্রত্যেকের: ডিউ - জমা) যোগফল
+      function updateHeaderTotal() {
+        let total = customers.reduce((acc, customer) => {
+          let customerDue = (customer.transactions || []).reduce((sum, tx) => {
+            return tx.type === "due" ? sum + tx.amount : sum;
+          }, 0);
+          let customerDeposit = (customer.transactions || []).reduce((sum, tx) => {
+            return tx.type === "deposit" ? sum + Math.abs(tx.amount) : sum;
+          }, 0);
+          return acc + (customerDue - customerDeposit);
+        }, 0);
+        headerTotalDue.textContent = `মোট বাকি: ${total} টাকা`;
+      }
+
+      // কাস্টমারের প্রোফাইল দেখানো
+      function showCustomerProfile(index) {
+        const customer = customers[index];
+        document.getElementById("customerName").textContent = customer.name;
+        document.getElementById("customerInfo").textContent =
+          `ঠিকানা: ${customer.address} | নাম্বার: ${customer.number} | পরিচয়: ${customer.identity}`;
+        updateTransactions(index);
+        customerProfile.style.display = "block";
+        sidebar.classList.remove("show");
+      }
+
+      // কাস্টমারের ট্রানজেকশন আপডেট (প্রোফাইলে):
+      // - মোট বাকি: শুধুমাত্র ডিউ এর যোগফল
+      // - মোট জমা: জমার যোগফল
+      // - অবশিষ্ট: (ডিউ - জমা)
+      function updateTransactions(index) {
+        const customer = customers[index];
+        transactionsList.innerHTML = "";
+        let totalDue = 0;
+        let totalDeposit = 0;
+
+        (customer.transactions || []).forEach((tx) => {
+          const li = document.createElement("li");
+          li.classList.add(tx.type);
+          li.innerHTML = `<span class="${tx.type}">${
+            tx.type === "due" ? "ডিউ" : "ডিপোজিট"
+          }</span> - ${tx.date} - ${tx.amount} টাকা`;
+          li.addEventListener("click", () => {
+            alert(`তারিখ: ${tx.date}\nপরিমাণ: ${tx.amount} টাকা\nকারণ: ${tx.reason}`);
+          });
+          transactionsList.appendChild(li);
+
+          if (tx.type === "due") totalDue += tx.amount;
+          else totalDeposit += Math.abs(tx.amount);
+        });
+
+        document.getElementById("totalDue").textContent = totalDue;
+        document.getElementById("totalDeposit").textContent = totalDeposit;
+        document.getElementById("remainingDue").textContent = totalDue - totalDeposit;
+        updateHeaderTotal();
+      }
+
+      // ট্রানজেকশন ফর্ম দেখানো
+      showTransactionFormBtn.addEventListener("click", () => {
+        transactionForm.style.display =
+          transactionForm.style.display === "block" ? "none" : "block";
+      });
+
+      // ট্রানজেকশন সংরক্ষণ (Firestore-এ sync হবে)
+      document.getElementById("dueTransaction").addEventListener("click", () =>
+        saveTransaction("due")
+      );
+      document.getElementById("depositTransaction").addEventListener("click", () =>
+        saveTransaction("deposit")
+      );
+
+      function saveTransaction(type) {
+        let amount = parseFloat(document.getElementById("amount").value);
+        let date = document.getElementById("date").value;
+        let reason = document.getElementById("reason").value.trim();
+
+        if (!amount || !date || !reason) {
+          alert("সমস্ত ফিল্ড পূরণ করুন!");
+          return;
+        }
+
+        // তারিখ ফরম্যাট: dd/mm/yyyy
+        let formattedDate = date.split("-").reverse().join("/");
+        const transaction = {
+          amount: type === "due" ? amount : -amount,
+          date: formattedDate,
+          reason,
+          type
+        };
+
+        // customer name is used as identifier
+        let currentCustomerName = document.getElementById("customerName").textContent;
+        customers.forEach((customer, index) => {
+          if (customer.name === currentCustomerName) {
+            // Update local customer object
+            if (!customer.transactions) customer.transactions = [];
+            customer.transactions.push(transaction);
+            // Sync updated customer data to Firestore
+            saveData("Baki", customer.name, customer);
+            updateTransactions(index);
+          }
+        });
+
+        document.getElementById("amount").value = "";
+        document.getElementById("date").value = "";
+        document.getElementById("reason").value = "";
+        transactionForm.style.display = "none";
+
+        alert(`"${type === 'due' ? 'ডিউ' : 'ডিপোজিট'}" ট্রানজেকশন সফলভাবে যোগ করা হয়েছে!`);
+      }
+    </script>
+  </div>
+</body>
+</html>
